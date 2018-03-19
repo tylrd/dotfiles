@@ -2,6 +2,7 @@ cask_args appdir: '/Applications'
 
 tap 'homebrew/services'
 tap 'caskroom/cask'
+tap 'caskroom/fonts'
 
 cask 'java' unless system "/usr/libexec/java_home --failfast"
 
@@ -16,11 +17,13 @@ brew 'gradle'
 brew 'maven'
 brew 'wget'
 brew 'nginx'
-brew 'redis'
+brew 'redis', restart_services: true
 brew 'mysql'
 brew 'bash-completion'
 brew 'terraform'
 brew 'tmux'
+brew 'reattach-to-user-namespace'
+brew 'go'
 
 cask 'google-chrome'
 cask 'dropbox'
@@ -32,3 +35,5 @@ cask 'sourcetree'
 cask 'postman'
 cask 'atom'
 cask 'sip'
+cask 'font-source-code-pro'
+cask 'google-cloud-sdk'
