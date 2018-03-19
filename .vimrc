@@ -6,6 +6,7 @@ set number
 set relativenumber
 set laststatus=2
 set hidden
+set nocompatible
 set ts=4
 set sw=4
 set sts=4
@@ -25,10 +26,14 @@ set cursorline
 set textwidth=120
 set colorcolumn=120
 
+filetype plugin indent on
+
 " Switch between last two files
 nnoremap <Leader><Leader> <C-^>
 nnoremap <Leader>w :write<CR>
-nnoremap <Leader>q :quit<CR>
+
+" Close current buffer
+nnoremap <Leader>q :bd<CR>
 
 " Open general vim settings
 nnoremap <Leader>v :sp ~/.general<CR>
@@ -44,6 +49,7 @@ nnoremap <C-l> <C-w>l
 " Quickly switch between buffers
 nnoremap <Leader>= :bprevious<CR>
 nnoremap <Leader>- :bnext<CR>
+nnoremap <Leader><Leader> :noh<CR>
 
 " let's not do swapfiles, k?
 set noswapfile
@@ -73,6 +79,8 @@ endif
 
 set highlight+=c:LineNr
 set highlight+=N:DiffText
+set hlsearch
+let @/ = ""
 
 set foldmethod=indent
 set nofoldenable
@@ -84,6 +92,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
+Plug 'vim-syntastic/syntastic'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdtree'
 Plug 'hashivim/vim-terraform'
@@ -94,21 +103,7 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wincent/terminus'
-Plug 'haya14busa/incsearch.vim'
 call plug#end()
-
-set hlsearch
-let g:incsearch#auto_nohlsearch = 1
-map n  <Plug>(incsearch-nohl-n)
-map N  <Plug>(incsearch-nohl-N)
-map *  <Plug>(incsearch-nohl-*)
-map #  <Plug>(incsearch-nohl-#)
-map g* <Plug>(incsearch-nohl-g*)
-map g# <Plug>(incsearch-nohl-g#)
-
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
 
 map <C-n> :NERDTreeToggle<CR>
 
@@ -124,3 +119,7 @@ endif
 
 set updatetime=100
 set timeoutlen=1000 ttimeoutlen=0
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
