@@ -1,0 +1,63 @@
+function killp () {
+  if (( $# == 0 ))
+  then
+    echo usage: killp portNumber1 portNumber2 ...
+  else
+    for i;do 
+      PROCESS=$(lsof -t -i:$i)
+      if [[ $PROCESS ]]; then
+        kill -9 $PROCESS
+        echo "killed process $PROCESS"
+      else
+        echo "No process found for port $i"
+      fi
+    done
+  fi;
+}
+
+mkd() {
+    mkdir -p "$@"
+    cd "$@" || exit
+}
+
+# Determine size of a file or total size of a directory
+fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh
+	else
+		local arg=-sh
+	fi
+	# shellcheck disable=SC2199
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@"
+	else
+		du $arg -- .[^.]* *
+	fi
+}
+
+# Use Git’s colored diff when available
+if hash git &>/dev/null ; then
+	diff() {
+		git diff --no-index --color-words "$@"
+	}
+fi
+
+# Create a data URL from a file
+dataurl() {
+	local mimeType
+	mimeType=$(file -b --mime-type "$1")
+	if [[ $mimeType == text/* ]]; then
+		mimeType="${mimeType};charset=utf-8"
+	fi
+	echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
+}
+
+# Syntax-highlight JSON strings or files
+# Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
+json() {
+	if [ -t 0 ]; then # argument
+		python -mjson.tool <<< "$*" | pygmentize -l javascript
+	else # pipe
+		python -mjson.tool | pygmentize -l javascript
+	fi
+}
