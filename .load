@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+
+# make vim the default editor
+export PAGER=${PAGER:-"less"}
+export CDPATH=.:~:~/Documents/code
+
+# use sublime text for local changes
+if [[ -n $SSH_CONNECTION ]]; then
+  EDITOR=${EDITOR:-"vim"}
+else
+  if which atom >/dev/null 2>&1; then
+    EDITOR="atom"
+  else
+    EDITOR=${EDITOR:-"vim"}
+  fi
+fi
+export EDITOR
+export VISUAL=$EDITOR
+
+PREVIEW="less"
+[ -s /usr/bin/gloobus-preview ] && PREVIEW="gloobus-preview"
+[ -s /Applications/Preview.app ] && PREVIEW="/Applications/Preview.app"
+export PREVIEW
+
+# detect your os
+case "$OSTYPE" in
+  solaris*) SYSTEM_TYPE="SOLARIS" ;;
+  darwin*)  SYSTEM_TYPE="OSX" ;;
+  linux*)   SYSTEM_TYPE="LINUX" ;;
+  bsd*)     SYSTEM_TYPE="BSD" ;;
+  msys*)    SYSTEM_TYPE="MINGW" ;;
+  cygwin*)  SYSTEM_TYPE="CYGWIN" ;;
+esac
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  SYSTEM_TYPE="OSX"
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
+  SYSTEM_TYPE="LINUX"
+elif [[ "$(expr substr $(uname -s) 1 7)" == "FreeBSD" ]]; then
+  SYSTEM_TYPE="FREE_BSD"
+elif [[ "$(expr substr $(uname -s) 1 6)" == "NetBSD" ]]; then
+  SYSTEM_TYPE="NET_BSD"
+elif [[ "$(expr substr $(uname -s) 1 7)" == "OpenBSD" ]]; then
+  SYSTEM_TYPE="OPEN_BSD"
+elif [[ "$(expr substr $(uname -s) 1 7)" == "MSYS_NT" ]]; then
+  SYSTEM_TYPE="MINGW"
+elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]]; then
+  SYSTEM_TYPE="MINGW"
+elif [[ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]]; then
+  SYSTEM_TYPE="MINGW"
+elif [[ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]]; then
+  SYSTEM_TYPE="CYGWIN"
+fi
+
+export SYSTEM_TYPE
+
+if which brew >/dev/null 2>&1; then
+  INSTALL_TYPE="BREW"
+fi
+
+if which apt-get >/dev/null 2>&1; then
+  INSTALL_TYPE="APT"
+fi
+
+if which yum >/dev/null 2>&1; then
+  INSTALL_TYPE="YUM"
+fi
+
+export INSTALL_TYPE
+
+#don't check mail when opening terminal.
+unset MAILCHECK
+
+
+# make the "sudo" prompt more useful, without requiring access to "visudo"
+export SUDO_PROMPT=${SUDO_PROMPT:-"[sudo] password for %u on %h: "}
+
+# PATH addons
+if [ -d "$HOME/bin" ]; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+if which ruby >/dev/null 2>&1 && which gem >/dev/null 2>&1; then
+  PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+fi
+
+export PATH="/usr/local/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
+
+if [ -d "/usr/local/man" ]; then
+  MANPATH="/usr/local/man:$MANPATH"
+fi
+
+if [ -d "/usr/local/mysql/man" ]; then
+  MANPATH="/usr/local/man:$MANPATH"
+fi
+
+if [ -d "/usr/local/git/man" ]; then
+  MANPATH="/usr/local/git/man:$MANPATH"
+fi
+
+export MANPATH
+
+# larger bash history (allow 32³ entries; default is 500)
+export HISTSIZE=${HISTSIZE:-32768} # resize history size
+export HISTFILESIZE=$HISTSIZE
+
+# ignore duplicates commands in the historylog
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoredups
+
+# make some commands not show up in history
+export HISTIGNORE=${HISTIGNORE:-"shutdown*:halt*:poweroff*:hibernate*:rm -rf*"}
+
+# ignorespace	| don't save lines which begin with a <space> character
+# ignoredups	| don't save lines matching the previous history entry
+# ignoreboth	| use both 'ignorespace' and 'ignoredups'
+# erasedups	  | eliminate duplicates across the whole history
+
+# add the date to the historylog
+#
+# Keep track of the time the commands were executed.
+# The xterm colour escapes require special care when piping; e.g. "| less -R".
+#export HISTTIMEFORMAT=$(echo -e "${COLOR_LIGHT_BLUE}%Y-%m-%d %H:%M:%S${COLOR_NO_COLOUR} ")
+export HISTTIMEFORMAT=${HISTTIMEFORMAT:-"%Y-%m-%d %H:%M:%S"}
+
+if [ $SYSTEM_TYPE = "OSX" ]; then
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+      . $(brew --prefix)/etc/bash_completion
+    fi
+fi
+
+[ -f $HOME/.git-completion.bash ] && source $HOME/.git-completion.bash
