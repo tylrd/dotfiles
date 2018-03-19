@@ -12,5 +12,5 @@ $ brew bundle --global
 $ vim +PlugInstall
 
 # Set color themes
-$ base_tomorrow-night
+$ base16_tomorrow-night
 ```
