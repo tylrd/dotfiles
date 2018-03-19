@@ -101,3 +101,4 @@ if filereadable(expand("~/.vimrc_background"))
 endif
 
 set updatetime=100
+set timeoutlen=1000 ttimeoutlen=0
