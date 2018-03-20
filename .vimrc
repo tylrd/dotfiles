@@ -105,7 +105,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-Plug 'vim-syntastic/syntastic'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdtree'
 Plug 'hashivim/vim-terraform'
@@ -133,11 +132,4 @@ endif
 set updatetime=100
 set timeoutlen=1000 ttimeoutlen=0
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+set wildignore+=*/.terraform/*,*/node_modules/*,*.swp,*.so,*.zip,*/.gradle/*
