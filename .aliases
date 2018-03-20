@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 if which vim >/dev/null 2>&1; then
   alias vi="vim"
 fi
@@ -15,16 +17,16 @@ alias vimrc="vim ~/.vimrc"
 alias path="echo -e ${PATH//:/\\n}"
 alias mkdir="mkdir -p"
 
-# tree (with fallback)
-if which tree >/dev/null 2>&1; then
-  # displays a directory tree
-  alias tree="tree -Csu"
-  # displays a directory tree - paginated
-  alias ltree="tree -Csu | less -R"
-else
-  alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
-  alias ltree="tree | less -R"
-fi
+# # tree (with fallback)
+# if which tree >/dev/null 2>&1; then
+#   # displays a directory tree
+#   alias tree="tree -Csu"
+#   # displays a directory tree - paginated
+#   alias ltree="tree -Csu | less -R"
+# else
+#   alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+#   alias ltree="tree | less -R"
+# fi
 
 alias myip_dns="dig +short myip.opendns.com @resolver1.opendns.com"
 alias lsport='sudo lsof -i -T -n'
