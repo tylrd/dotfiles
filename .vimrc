@@ -29,14 +29,16 @@ set colorcolumn=120
 filetype plugin indent on
 
 " Switch between last two files
-nnoremap <Leader><Leader> <C-^>
+nnoremap <Leader>b <C-^>
+
 nnoremap <Leader>w :write<CR>
 
 " Close current buffer
-nnoremap <Leader>q :bd<CR>
+nnoremap <Leader>qq :bd<CR>
 
-" Open general vim settings
-nnoremap <Leader>v :sp ~/.general<CR>
+" Easier editing of .vimrc
+nnoremap <Leader>v :sp ~/.vimrc<CR>
+nnoremap <Leader>r :source $MYVIMRC<CR>
 
 nnoremap <Leader>h :silent! nohls<cr>
 
@@ -49,13 +51,15 @@ nnoremap <C-l> <C-w>l
 " Quickly switch between buffers
 nnoremap <Leader>= :bprevious<CR>
 nnoremap <Leader>- :bnext<CR>
+
+" Turn off highlight searches
 nnoremap <Leader><Leader> :noh<CR>
 
 " let's not do swapfiles, k?
 set noswapfile
 
-set noerrorbells " donkey!
-
+" donkey!
+set noerrorbells
 set vb t_vb=
 
 " Remap j and k to act as expected when used on long, wrapped, lines
@@ -68,6 +72,7 @@ nnoremap Y y$
 " Toggle folds
 nnoremap <Tab> za
 
+" Spacing for ruby, js, and terraform files
 autocmd FileType json,js,tf,rb setlocal ts=2 sw=2 sts=2
 
 syntax on
@@ -77,6 +82,8 @@ if exists('+colorcolumn')
   let &l:colorcolumn='+' . join(range(0, 254), ',+')
 endif
 
+" high contrast parens
+hi MatchParen cterm=none ctermbg=black ctermfg=white
 set highlight+=c:LineNr
 set highlight+=N:DiffText
 set hlsearch

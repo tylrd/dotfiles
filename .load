@@ -129,3 +129,11 @@ if [ $SYSTEM_TYPE = "OSX" ]; then
 fi
 
 [ -f $HOME/.git-completion.bash ] && source $HOME/.git-completion.bash
+
+export LS_COLORS='di=34' # directory  blue
+LS_COLORS+=':ln=35'      # symlink    magenta
+LS_COLORS+=':ex=31'      # executable red
+LS_COLORS+=':st=0'       # sticky     normal
+
+# must use exit to exit shell
+set -o ignoreeof

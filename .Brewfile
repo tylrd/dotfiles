@@ -6,6 +6,7 @@ tap 'caskroom/fonts'
 
 cask 'java' unless system "/usr/libexec/java_home --failfast"
 
+brew 'bash'
 brew 'tree'
 brew 'coreutils'
 brew 'jq'
