@@ -73,7 +73,7 @@ nnoremap Y y$
 nnoremap <Tab> za
 
 " Spacing for ruby, js, and terraform files
-autocmd FileType json,js,tf,rb setlocal ts=2 sw=2 sts=2
+autocmd FileType *.json,*.js,*.tf,ruby setlocal ts=2 sw=2 sts=2
 
 syntax on
 
@@ -83,11 +83,11 @@ if exists('+colorcolumn')
 endif
 
 " high contrast parens
-hi MatchParen cterm=none ctermbg=black ctermfg=white
 set highlight+=c:LineNr
 set highlight+=N:DiffText
 set hlsearch
 let @/ = ""
+hi MatchParen cterm=none ctermbg=black ctermfg=white
 
 set foldmethod=indent
 set nofoldenable
