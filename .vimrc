@@ -26,6 +26,16 @@ set cursorline
 set textwidth=120
 set colorcolumn=120
 
+set autoindent
+set backspace=indent,eol,start
+set complete-=i
+set smarttab
+
+set incsearch
+set wildmenu
+set history=1000
+set t_Co=16
+
 filetype plugin indent on
 
 " Switch between last two files
@@ -87,7 +97,6 @@ set highlight+=c:LineNr
 set highlight+=N:DiffText
 set hlsearch
 let @/ = ""
-hi MatchParen cterm=none ctermbg=black ctermfg=white
 
 set foldmethod=indent
 set nofoldenable
@@ -100,7 +109,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
-Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -108,6 +116,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdtree'
 Plug 'hashivim/vim-terraform'
+Plug 'chr4/nginx.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'airblade/vim-gitgutter'
@@ -131,5 +140,7 @@ endif
 
 set updatetime=100
 set timeoutlen=1000 ttimeoutlen=0
+hi! MatchParen cterm=none ctermbg=black ctermfg=white
+hi! Error cterm=reverse ctermbg=white ctermfg=red
 
 set wildignore+=*/.terraform/*,*/node_modules/*,*.swp,*.so,*.zip,*/.gradle/*
