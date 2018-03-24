@@ -94,11 +94,17 @@ if exists('+colorcolumn')
   let &l:colorcolumn='+' . join(range(0, 254), ',+')
 endif
 
-" high contrast parens
 set highlight+=c:LineNr
 set highlight+=N:DiffText
+set highlight+=@:ColorColumn
 set hlsearch
 let @/ = ""
+
+if v:version > 703 || v:version == 703 && has('patch541')
+  set formatoptions+=j                " remove comment leader when joining comment lines
+endif
+
+set formatoptions+=n                  " smart auto-indenting inside numbered lists
 
 set foldmethod=indent
 set nofoldenable
