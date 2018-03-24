@@ -73,8 +73,9 @@ set noerrorbells
 set vb t_vb=
 
 " Remap j and k to act as expected when used on long, wrapped, lines
-nnoremap j gj
-nnoremap k gk
+" https://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
 
 " Yank to end of line
 nnoremap Y y$
