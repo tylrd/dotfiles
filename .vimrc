@@ -153,3 +153,14 @@ hi! MatchParen cterm=none ctermbg=black ctermfg=white
 hi! Error cterm=reverse ctermbg=white ctermfg=red
 
 set wildignore+=*/.terraform/*,*/node_modules/*,*.swp,*.so,*.zip,*/.gradle/*
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+endif
