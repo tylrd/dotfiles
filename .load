@@ -80,9 +80,9 @@ if [ -d "$HOME/bin" ]; then
   PATH="$HOME/bin:$PATH"
 fi
 
-if which ruby >/dev/null 2>&1 && which gem >/dev/null 2>&1; then
-  PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
-fi
+# if which ruby >/dev/null 2>&1 && which gem >/dev/null 2>&1; then
+#   PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+# fi
 
 export PATH="/usr/local/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
 
@@ -137,3 +137,6 @@ LS_COLORS+=':st=0'       # sticky     normal
 
 # must use exit to exit shell
 set -o ignoreeof
+
+# Go variables
+export GOPATH=$HOME/go

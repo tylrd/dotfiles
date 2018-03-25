@@ -1,4 +1,4 @@
-for file in ~/{.load,.prompt,.exports,.aliases,.functions}; do
+for file in ~/{.load,.path,.prompt,.exports,.aliases,.functions}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 

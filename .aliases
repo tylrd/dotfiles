@@ -15,7 +15,7 @@ alias d="docker"
 alias v="vim"
 alias issh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ForwardAgent=yes"
 alias vimrc="vim ~/.vimrc"
-alias path="echo -e ${PATH//:/\\n}"
+alias path="echo \"${PATH//:/$'\n'}\""
 alias mkdir="mkdir -p"
 
 # # tree (with fallback)
