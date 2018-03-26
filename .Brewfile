@@ -24,6 +24,7 @@ if !ARGV.include?("--casks")
     brew 'reattach-to-user-namespace'
     brew 'go'
     brew 'the_silver_searcher'
+    brew 'shellcheck'
 end
 
 if ARGV.include?("--casks")

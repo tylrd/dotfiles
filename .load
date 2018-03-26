@@ -3,24 +3,8 @@
 # make vim the default editor
 export PAGER=${PAGER:-"less"}
 export CDPATH=.:~:~/Documents/code
-
-# use sublime text for local changes
-if [[ -n $SSH_CONNECTION ]]; then
-  EDITOR=${EDITOR:-"vim"}
-else
-  if which atom >/dev/null 2>&1; then
-    EDITOR="atom"
-  else
-    EDITOR=${EDITOR:-"vim"}
-  fi
-fi
-export EDITOR
+export EDITOR="vim"
 export VISUAL=$EDITOR
-
-PREVIEW="less"
-[ -s /usr/bin/gloobus-preview ] && PREVIEW="gloobus-preview"
-[ -s /Applications/Preview.app ] && PREVIEW="/Applications/Preview.app"
-export PREVIEW
 
 # detect your os
 case "$OSTYPE" in
@@ -71,34 +55,8 @@ export INSTALL_TYPE
 #don't check mail when opening terminal.
 unset MAILCHECK
 
-
 # make the "sudo" prompt more useful, without requiring access to "visudo"
 export SUDO_PROMPT=${SUDO_PROMPT:-"[sudo] password for %u on %h: "}
-
-# PATH addons
-if [ -d "$HOME/bin" ]; then
-  PATH="$HOME/bin:$PATH"
-fi
-
-# if which ruby >/dev/null 2>&1 && which gem >/dev/null 2>&1; then
-#   PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
-# fi
-
-export PATH="/usr/local/bin:/usr/sbin:/sbin:/usr/local/sbin:$PATH"
-
-if [ -d "/usr/local/man" ]; then
-  MANPATH="/usr/local/man:$MANPATH"
-fi
-
-if [ -d "/usr/local/mysql/man" ]; then
-  MANPATH="/usr/local/man:$MANPATH"
-fi
-
-if [ -d "/usr/local/git/man" ]; then
-  MANPATH="/usr/local/git/man:$MANPATH"
-fi
-
-export MANPATH
 
 # larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=${HISTSIZE:-32768} # resize history size
