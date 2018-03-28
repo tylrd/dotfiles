@@ -141,6 +141,8 @@ map <C-n> :NERDTreeToggle<CR>
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='minimalist'
 
+let g:go_version_warning = 0
+
 let g:ctrlp_show_hidden = 1
 
 if filereadable(expand("~/.vimrc_background"))
