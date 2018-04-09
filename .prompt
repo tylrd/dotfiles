@@ -22,5 +22,7 @@ __prompt_command() {
         PS1+="\u"
     fi
 
-    PS1+="${RCol}@\h:${Blu}\w${BYel}$(__git_ps1 " (%s)") ${RCol}\n$ "
+    pwd2=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";IFS=/; for q in ${p:1}; do printf /${q:0:1}; done; printf "${q:1}")
+
+    PS1+="${RCol}@\h:${Blu}$pwd2${BYel}$(__git_ps1 " (%s)") ${RCol}\n$ "
 }
