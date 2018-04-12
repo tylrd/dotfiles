@@ -19,7 +19,18 @@ alias vimrc="vim ~/.vimrc"
 alias path="echo \"${PATH//:/$'\n'}\""
 alias mkdir="mkdir -p"
 alias srv="python3 -m http.server --bind=127.0.0.1"
-alias gproj="gcloud config get-value project 2>&1 | tail -n 1"
+alias gcp="gcloud config get-value project 2>&1 | tail -n 1"
+alias gcps="gcloud config set project"
+
+sshtf() {
+  issh taylor.daugherty@$(tf output bastion_host_public_ip)
+}
+
+sshtfp() {
+  ssh -t -o ForwardAgent=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+    ProxyCommand="ssh -o ForwardAgent=yes taylor.daugherty@$(tf output bastion_host_public_ip)" \
+    "$@"
+}
 
 # # tree (with fallback)
 # if which tree >/dev/null 2>&1; then
