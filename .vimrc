@@ -59,8 +59,8 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 " Quickly switch between buffers
-nnoremap <Leader>= :bprevious<CR>
-nnoremap <Leader>- :bnext<CR>
+nnoremap <Leader>- :bprevious<CR>
+nnoremap <Leader>= :bnext<CR>
 
 " Turn off highlight searches
 nnoremap <Leader><Leader> :noh<CR>
