@@ -59,3 +59,8 @@ dataurl() {
 j() {
   jq '.'
 }
+
+# converts RSA key to single line
+convert_key() {
+  sed s/$/\\\\n/ | tr -d '\n'
+}
