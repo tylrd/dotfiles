@@ -23,25 +23,15 @@ alias gcp="gcloud config get-value project 2>&1 | tail -n 1"
 alias gcps="gcloud config set project"
 
 tf_bastion() {
-  issh taylor.daugherty@$(tf output bastion_host_public_ip)
+  issh taylor.daugherty@$(tf output bastion_public_ip)
 }
 
 tfssh() {
-  ssh -t -o ForwardAgent=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-    -o ProxyCommand="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p %r@$(tf output bastion_host_public_ip)" \
-    "$@"
+  local ssh_opts="-o ForwardAgent=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+  local bastion_ip=$(tf output bastion_public_ip)
+  local proxy_command="-o ProxyCommand=\"ssh $ssh_opts -W %h:%p %r@$bastion_ip\""
+  ssh -t $ssh_opts $proxy_command "$@"
 }
-
-# # tree (with fallback)
-# if which tree >/dev/null 2>&1; then
-#   # displays a directory tree
-#   alias tree="tree -Csu"
-#   # displays a directory tree - paginated
-#   alias ltree="tree -Csu | less -R"
-# else
-#   alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
-#   alias ltree="tree | less -R"
-# fi
 
 alias myip_dns="dig +short myip.opendns.com @resolver1.opendns.com"
 alias lsport='sudo lsof -i -T -n'
