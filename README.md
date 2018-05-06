@@ -2,5 +2,5 @@
 
 ```bash
 $ curl -Lks https://raw.githubusercontent.com/tylrd/dotfiles/master/.bin/install.sh | /bin/bash
-$ ~/.bin/boostrap.sh
+$ ~/.bin/bootstrap.sh
 ```
