@@ -134,6 +134,7 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wincent/terminus'
+Plug 'martinda/Jenkinsfile-vim-syntax'
 call plug#end()
 
 map <C-n> :NERDTreeToggle<CR>
