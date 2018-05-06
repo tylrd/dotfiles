@@ -19,7 +19,7 @@ if !ARGV.include?("--casks")
     brew 'redis', restart_services: true
     brew 'mysql'
     brew 'bash-completion'
-    brew 'terraform'
+    brew 'tfenv'
     brew 'tmux'
     brew 'reattach-to-user-namespace'
     brew 'go'
