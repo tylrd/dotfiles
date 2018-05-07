@@ -21,6 +21,7 @@ alias mkdir="mkdir -p"
 alias srv="python3 -m http.server --bind=127.0.0.1"
 alias gcp="gcloud config get-value project 2>&1 | tail -n 1"
 alias gcps="gcloud config set project"
+alias mux="tmuxinator"
 
 tf_bastion() {
   issh taylor.daugherty@$(tf output bastion_public_ip)
