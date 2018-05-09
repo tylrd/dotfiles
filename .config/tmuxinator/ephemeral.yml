@@ -5,17 +5,20 @@ root: ~/productivity
 windows:
   - terraform:
       root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-terraform-lib
-      pre:
-        - source bin/env
+      layout: even-horizontal
+      panes:
+        - vim
+        - terraform:
+          - source bin/env
+          - clear
+  - chef:
+      root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-chef-repo
       layout: main-vertical
-      # Synchronize all panes of this window, can be enabled before or after the pane commands run.
-      # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
-      # synchronize: after
       panes:
         - vim
         -
-  - chef:
-      root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-chef-repo
+  - cookbooks:
+      root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-cookbooks
       layout: main-vertical
       panes:
         - vim
