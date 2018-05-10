@@ -4,7 +4,7 @@
 <% if host == 'taylor-home.local' %>
     <% workspace = 'Documents/code' %>
 <% elsif host.start_with?('bc-') %>
-    <% workspace = 'productivity' %>
+    <% workspace = 'productivity/eph' %>
 <% end %>
 
 name: ephemeral
@@ -20,21 +20,23 @@ windows:
           - clear
   - chef:
       root: ~/<%= workspace %>/platform-chef-repo
-      layout: main-vertical
+      layout: even-horizontal
       panes:
         - vim
         - chef:
           - export CHEF_ENV=$(gcloud config get-value project)
+          - clear
   - cookbooks:
       root: ~/<%= workspace %>/platform-cookbooks
-      layout: main-vertical
+      layout: even-horizontal
       panes:
         - vim
         - chef:
           - export CHEF_ENV=$(gcloud config get-value project)
+          - clear
   - packer:
       root: ~/<%= workspace %>/platform-packer-lib
-      layout: main-vertical
+      layout: even-horizontal
       panes:
         - vim
         -

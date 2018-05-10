@@ -4,36 +4,52 @@ if which vim >/dev/null 2>&1; then
   alias vi="vim"
 fi
 
+alias mkdir="mkdir -p"
 alias c="clear"
-alias tf="terraform"
 alias rm="rm -i"
 alias g="git"
 alias grep="grep --color=auto"
-alias t="tmux"
-alias gc="git commit -am"
-alias gwip="git commit -m \"WIP\""
-alias d="docker"
-alias v="vim"
-alias issh="ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ForwardAgent=yes"
 alias vimrc="vim ~/.vimrc"
+
+# Insecure ssh; only use this for sites you **DEFINITELY** trust
+# Seriously...
+alias issh="ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ForwardAgent=yes"
+
+# pretty-print path
 alias path="echo \"${PATH//:/$'\n'}\""
-alias mkdir="mkdir -p"
+
+# Starts web server that serves cwd
 alias srv="python3 -m http.server --bind=127.0.0.1"
-alias gcp="gcloud config get-value project 2>&1 | tail -n 1"
+
+alias tf="terraform"
+alias t="tmux"
+alias tkill="tmux kill-session -t"
+
+# Google Cloud aliases
+alias gc="gcloud"
+alias gcp="gcloud config get-value project"
 alias gcps="gcloud config set project"
+
+# kills all tmux sessions
+alias kmux="tmux ls | awk '{ print \$1}' | tr -d ':' | xargs -I{} tmux kill-session -t {}"
 alias mux="tmuxinator"
 
+# Starts ephemeral session in tmux
+alias eph="tmuxinator start ephemeral"
+
+# ssh into bastion host of current terraform state
 tf_bastion() {
   issh taylor.daugherty@$(tf output bastion_public_ip)
 }
 
+# ssh into terraform'd instances
 tfssh() {
   local ssh_opts="-o ForwardAgent=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
   local bastion_ip=$(tf output bastion_public_ip)
   ssh -t $ssh_opts -o ProxyCommand="ssh $ssh_opts %r@$bastion_ip -W %h:%p" taylor.daugherty@"$@"
 }
 
-alias myip_dns="dig +short myip.opendns.com @resolver1.opendns.com"
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias lsport='sudo lsof -i -T -n'
 
 alias date_iso_8601='date "+%Y%m%dT%H%M%S"'

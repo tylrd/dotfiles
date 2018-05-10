@@ -19,6 +19,3 @@ $endif
 
 "\e\t": menu-complete-backward
 "\e[Z": menu-complete-backward
-
-# time commands with C-j
-"\C-j": "\C-atime \C-m"
