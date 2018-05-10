@@ -30,7 +30,7 @@ tf_bastion() {
 tfssh() {
   local ssh_opts="-o ForwardAgent=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
   local bastion_ip=$(tf output bastion_public_ip)
-  ssh -t $ssh_opts -o ProxyCommand="ssh $ssh_opts %r@$bastion_ip -W %h:%p" "$@"
+  ssh -t $ssh_opts -o ProxyCommand="ssh $ssh_opts %r@$bastion_ip -W %h:%p" taylor.daugherty@"$@"
 }
 
 alias myip_dns="dig +short myip.opendns.com @resolver1.opendns.com"

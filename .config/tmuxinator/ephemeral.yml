@@ -16,13 +16,15 @@ windows:
       layout: main-vertical
       panes:
         - vim
-        -
+        - chef:
+          - export CHEF_ENV=$(gcloud config get-value project)
   - cookbooks:
       root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-cookbooks
       layout: main-vertical
       panes:
         - vim
-        -
+        - chef:
+          - export CHEF_ENV=$(gcloud config get-value project)
   - packer:
       root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-packer-lib
       layout: main-vertical
