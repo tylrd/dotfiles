@@ -1,10 +1,17 @@
 # ~/.tmuxinator/ephemeral.yml
 
+<% require 'socket'; host = Socket.gethostname %>
+<% if host == 'taylor-home.local' %>
+    <% workspace = 'Documents/code' %>
+<% elsif host.start_with?('bc-') %>
+    <% workspace = 'productivity' %>
+<% end %>
+
 name: ephemeral
-root: ~/productivity
+root: ~/<%= workspace %>
 windows:
   - terraform:
-      root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-terraform-lib
+      root: ~/<%= workspace %>/platform-terraform-lib
       layout: even-horizontal
       panes:
         - vim
@@ -12,21 +19,21 @@ windows:
           - source bin/env
           - clear
   - chef:
-      root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-chef-repo
+      root: ~/<%= workspace %>/platform-chef-repo
       layout: main-vertical
       panes:
         - vim
         - chef:
           - export CHEF_ENV=$(gcloud config get-value project)
   - cookbooks:
-      root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-cookbooks
+      root: ~/<%= workspace %>/platform-cookbooks
       layout: main-vertical
       panes:
         - vim
         - chef:
           - export CHEF_ENV=$(gcloud config get-value project)
   - packer:
-      root: ~/<%= @settings["workspace"] || "productivity/eph" %>/platform-packer-lib
+      root: ~/<%= workspace %>/platform-packer-lib
       layout: main-vertical
       panes:
         - vim
