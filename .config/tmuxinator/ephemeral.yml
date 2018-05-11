@@ -6,7 +6,7 @@
 <% elsif host.start_with?('bc-') %>
     <% workspace = '~/productivity/eph' %>
 <% else %>
-    <% p 'hostname not recognized, defaulting to ~/Documents/code'
+    <% p 'hostname not recognized, defaulting to ~/Documents/code' %>
     <% workspace = '~/Documents/code' %>
 <% end %>
 
