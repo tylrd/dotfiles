@@ -2,41 +2,48 @@
 
 <% require 'socket'; host = Socket.gethostname %>
 <% if host == 'taylor-home.local' %>
-    <% workspace = 'Documents/code' %>
+    <% workspace = '~/Documents/code' %>
 <% elsif host.start_with?('bc-') %>
-    <% workspace = 'productivity/eph' %>
+    <% workspace = '~/productivity/eph' %>
+<% else %>
+    <% p 'hostname not recognized, defaulting to ~/Documents/code'
+    <% workspace = '~/Documents/code' %>
 <% end %>
 
 name: ephemeral
 root: ~/<%= workspace %>
 windows:
   - terraform:
-      root: ~/<%= workspace %>/platform-terraform-lib
+      root: <%= workspace %>/platform-terraform-lib
       layout: even-horizontal
       panes:
-        - vim
+        - vim .
         - terraform:
           - source bin/env
           - clear
+          - git fetch origin
   - chef:
-      root: ~/<%= workspace %>/platform-chef-repo
+      root: <%= workspace %>/platform-chef-repo
       layout: even-horizontal
       panes:
-        - vim
+        - vim .
         - chef:
           - export CHEF_ENV=$(gcloud config get-value project)
           - clear
+          - git fetch origin
   - cookbooks:
-      root: ~/<%= workspace %>/platform-cookbooks
+      root: <%= workspace %>/platform-cookbooks
       layout: even-horizontal
       panes:
-        - vim
+        - vim .
         - chef:
           - export CHEF_ENV=$(gcloud config get-value project)
           - clear
+          - git fetch origin
   - packer:
-      root: ~/<%= workspace %>/platform-packer-lib
+      root: <%= workspace %>/platform-packer-lib
       layout: even-horizontal
       panes:
-        - vim
-        -
+        - vim .
+        - packer:
+          - git fetch origin
