@@ -11,7 +11,7 @@
 <% end %>
 
 name: ephemeral
-root: ~/<%= workspace %>
+root: <%= workspace %>
 windows:
   - terraform:
       root: <%= workspace %>/platform-terraform-lib

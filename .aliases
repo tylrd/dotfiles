@@ -36,6 +36,7 @@ alias mux="tmuxinator"
 
 # Starts ephemeral session in tmux
 alias eph="tmuxinator start ephemeral"
+alias fe="tmuxinator start fe"
 
 # ssh into bastion host of current terraform state
 tf_bastion() {
@@ -97,6 +98,7 @@ fi
 
 if [[ "$SYSTEM_TYPE" == "OSX" ]]; then  # Is this the Ubuntu system?
     alias ls="gls -F --color=auto"
+    alias date="gdate"
 fi
 
 # list all files colorized in long format
