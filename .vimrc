@@ -84,7 +84,7 @@ nnoremap Y y$
 nnoremap <Tab> za
 
 " Spacing for ruby, js, and terraform files
-autocmd FileType json,*.js,*.tf,ruby setlocal ts=2 sw=2 sts=2
+autocmd FileType json,javascript,*.tf,ruby setlocal ts=2 sw=2 sts=2
 autocmd FileType sh setlocal ts=2 sw=2 sts=2
 autocmd FileType Jenkinsfile* setlocal ts=2 sw=2 sts=2
 
