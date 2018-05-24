@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 git clone --bare https://github.com/tylrd/dotfiles $HOME/.cfg
 
 function config {
@@ -13,7 +15,7 @@ if [ $? = 0 ]; then
   echo "Checked out config.";
   else
     echo "Backing up pre-existing dot files.";
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mkdir -p $(dirname .config-backup/{}); mv {} .config-backup/{}
+    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mkdir -p $(dirname .config-backup/{}) && mv {} .config-backup/{}
 fi;
 
 config checkout
