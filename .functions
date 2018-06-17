@@ -64,3 +64,46 @@ j() {
 convert_key() {
   sed s/$/\\\\n/ | tr -d '\n'
 }
+
+# grep for running docker container names and return the first container id
+dgrep() {
+  if (( $# == 0 )); then
+    echo "Usage: dgrep <container name>"
+  else
+    docker ps | grep "$1" | awk '{ print $1 }' | head -n 1
+  fi
+}
+
+dssh() {
+  if (( $# == 0 )); then
+    echo "Usage: dssh <container name>"
+  fi
+  local container=$(dgrep $1)
+
+  if [ "${container}" = "" ]; then
+    echo "Could not found container matching $1"
+    exit 1
+  fi
+
+  docker exec -it "${container}" /bin/bash
+}
+
+dkill() {
+  if (( $# == 0 )); then
+    echo "Usage: dkill <container name>"
+  fi
+  local container=$(dgrep $1)
+
+  if [ "${container}" = "" ]; then
+    echo "Could not found container matching $1"
+    exit 1
+  fi
+
+  echo "Killing container ${container}..."
+  docker kill "${container}"
+}
+
+# kill all vagrant images
+kvagrant() {
+  vagrant global-status | grep running | awk '{ print $1 }' | xargs vagrant destroy --force
+}
