@@ -36,6 +36,10 @@ set wildmenu
 set history=1000
 set t_Co=16
 
+" persistent undo
+set undofile
+set undodir=~/.vim/undodir
+
 filetype plugin indent on
 
 " Switch between last two files
