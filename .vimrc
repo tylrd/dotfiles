@@ -69,6 +69,9 @@ nnoremap <Leader>= :bnext<CR>
 " Turn off highlight searches
 nnoremap <Leader><Leader> :noh<CR>
 
+" Copy rest of line to line above
+nnoremap <Leader>p DO<c-r>"<esc>
+
 " let's not do swapfiles, k?
 set noswapfile
 
