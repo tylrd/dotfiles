@@ -25,6 +25,7 @@ if !ARGV.include?("--casks")
     brew 'go'
     brew 'the_silver_searcher'
     brew 'shellcheck'
+    brew 'fzf'
 end
 
 if ARGV.include?("--casks")

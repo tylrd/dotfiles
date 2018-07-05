@@ -135,7 +135,6 @@ Plug 'pangloss/vim-javascript'
 Plug 'fatih/vim-go'
 Plug 'hashivim/vim-terraform'
 Plug 'chr4/nginx.vim'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
@@ -143,6 +142,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wincent/terminus'
 Plug 'martinda/Jenkinsfile-vim-syntax'
+" Plug 'mtth/scratch.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 call plug#end()
 
 map <C-n> :NERDTreeToggle<CR>
@@ -150,9 +151,14 @@ map <C-n> :NERDTreeToggle<CR>
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='minimalist'
 
-let g:go_version_warning = 0
+nnoremap <silent> <C-p> :FZF<CR>
 
-let g:ctrlp_show_hidden = 1
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+
+let g:go_version_warning = 0
 
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
@@ -164,15 +170,4 @@ set timeoutlen=1000 ttimeoutlen=0
 hi! MatchParen cterm=none ctermbg=black ctermfg=white
 hi! Error cterm=reverse ctermbg=white ctermfg=red
 
-set wildignore+=*/.terraform/*,*/node_modules/*,*.swp,*.so,*.zip,*/.gradle/*
-
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-endif
+" set wildignore+=*/.terraform/*,*/node_modules/*,*.swp,*.so,*.zip,*/.gradle/*
