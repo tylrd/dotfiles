@@ -16,7 +16,7 @@
     co      = checkout
     unstage = reset HEAD --
     undo = reset --soft HEAD^
-    prune = fetch
+    prune = fetch --prune
 
 [merge "npm-merge-driver"]
     name = automatically merge npm lockfiles
