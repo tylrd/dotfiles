@@ -50,6 +50,15 @@ tfssh() {
   ssh -t $ssh_opts -o ProxyCommand="ssh $ssh_opts %r@$bastion_ip -W %h:%p" taylor.daugherty@"$@"
 }
 
+google() {
+  if [ -z "$1" ]; then
+    echo 'Must provide argument for google project'
+    return 1
+  fi
+  export GOOGLE_PROJECT=$1
+  gcloud config set project $1
+}
+
 cook() {
   local chef_env
 
