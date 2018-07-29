@@ -68,6 +68,11 @@ cook() {
     chef_env=$(gcloud config get-value project 2> /dev/null)
   fi
 
+  if [ ! -d "$HOME/.chef/$chef_env"  ]; then
+    echo "Not a valid option for cooking! No directory found: $HOME/.chef/$chef_env"
+    return 1
+  fi
+
   echo "You are now cooking with $chef_env! $(printf '\xF0\x9F\x8D\xB2')"
   export CHEF_ENV=$chef_env
 }
