@@ -52,8 +52,8 @@ tfssh() {
 
 google() {
   if [ -z "$1" ]; then
-    echo 'Must provide argument for google project'
-    return 1
+    echo "Current project: $(gcloud config get-value project 2> /dev/null)"
+    return 0
   fi
   export GOOGLE_PROJECT=$1
   gcloud config set project $1

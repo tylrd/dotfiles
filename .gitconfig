@@ -17,6 +17,7 @@
     unstage = reset HEAD --
     undo = reset --soft HEAD^
     prune = fetch --prune
+    blog = log --first-parent --no-merges --oneline
 
 [merge "npm-merge-driver"]
     name = automatically merge npm lockfiles
