@@ -70,7 +70,7 @@ dgrep() {
   if (( $# == 0 )); then
     echo "Usage: dgrep <container name>"
   else
-    docker ps | grep "$1" | awk '{ print $1 }' | head -n 1
+    docker ps | awk -v container=$1 '$0~container{ print $1 }' | head -n 1
   fi
 }
 
@@ -105,5 +105,69 @@ dkill() {
 
 # kill all vagrant images
 kvagrant() {
-  vagrant global-status | grep running | awk '{ print $1 }' | xargs vagrant destroy --force
+  vagrant global-status | awk '/running/{ print $1 }' | xargs vagrant destroy --force
+}
+
+# must be run from terraform workspace with "bastion_public_ip" in output
+tssh() {
+  local ssh_user="${SSH_USER:-taylor.daugherty}"
+  local hostname
+
+  if [ "$#" -ne 1  ]; then
+    echo "Must provide 1 argument => hostname"
+    return 1
+  else
+    hostname=$1
+  fi
+
+  local ssh_opts=(
+    -o ForwardAgent=yes
+    -o StrictHostKeyChecking=no
+    -o UserKnownHostsFile=/dev/null
+  )
+
+  local bastion_ip=$(terraform output bastion_public_ip)
+
+  if [ -z "$bastion_ip" ]; then
+    echo "Could not find bastion ip in output."
+    return 1
+  fi
+
+  local proxy_command="ssh ${ssh_opts[@]} %r@$bastion_ip -W %h:%p"
+  ssh "${ssh_opts[@]}" -o ProxyCommand="$proxy_command" $ssh_user@$hostname
+}
+
+
+# Runs chef-client for a given chef role in ephemeral environment
+tk() {
+  local role=$1
+
+  if [ -z "$role" ]; then
+    echo "Must provide role"
+    return 1
+  fi
+
+  local project=$(gcloud config get-value project 2> /dev/null)
+
+  if [ -z "$project" ]; then
+    echo "Could not obtain google project with gcloud."
+    return 1
+  fi
+
+  local bastion_ip=$(terraform output bastion_public_ip)
+
+  if [ -z "$bastion_ip" ]; then
+    echo "Could not find bastion ip in output."
+    return 1
+  fi
+
+  local environment="ephemeral-${project: -1}"
+
+  echo "Running chef client with role $role, in project $project & environment $environment..."
+
+  local command="${2:-"sudo chef-client -E $environment"}"
+
+  knife ssh "roles:$role" "$command" \
+    -A -x taylor.daugherty --ssh-gateway "$bastion_ip" \
+    --no-host-key-verify
 }
