@@ -19,7 +19,7 @@ windows:
       panes:
         - vim .
         - terraform:
-          - source bin/env
+          - SSH_USER=taylor.daugherty source bin/env
           - clear
           - git fetch origin
   - chef:
@@ -28,7 +28,7 @@ windows:
       panes:
         - vim .
         - chef:
-          - export CHEF_ENV=$(gcloud config get-value project)
+          - cook
           - clear
           - git fetch origin
   - cookbooks:
@@ -37,7 +37,7 @@ windows:
       panes:
         - vim .
         - chef:
-          - export CHEF_ENV=$(gcloud config get-value project)
+          - cook
           - clear
           - git fetch origin
   - packer:
