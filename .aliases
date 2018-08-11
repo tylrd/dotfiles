@@ -68,7 +68,7 @@ glist() {
     project=$(gcloud config get-value project)
   fi
 
-  echo "Instances for project: $project..."
+  >&2 echo "Instances for project: $project..."
 
   gcloud compute instances list --limit=100 --project="$project" --format=json
 }
