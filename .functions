@@ -5,7 +5,7 @@ function killp () {
   then
     echo usage: killp portNumber1 portNumber2 ...
   else
-    for i;do 
+    for i;do
       PROCESS=$(lsof -t -i:$i)
       if [[ $PROCESS ]]; then
         kill -9 $PROCESS
@@ -170,4 +170,79 @@ tk() {
   knife ssh "roles:$role" "$command" \
     -A -x taylor.daugherty --ssh-gateway "$bastion_ip" \
     --no-host-key-verify
+}
+
+bc_inst() {
+    local filter="$1"
+    shift
+
+    gcloud --project=bettercloud-non-prod \
+        compute instances list \
+        --sort-by=name \
+        --filter="$filter" "$@"
+}
+
+eph_inst() {
+    local project_num="$1"
+    shift
+
+    local filter="$1"
+    shift
+
+    gcloud --project="bettercloud-ephemeral-${project_num}" \
+        compute instances list \
+        --sort-by=name \
+        --filter="$filter" "$@"
+}
+
+eph_init() {
+  if [[ -z "$TF_BUCKET" ]]; then
+    echo 'Must set environment variable $TF_BUCKET'
+    return 1
+  fi
+  terraform init -backend-config="bucket=$TF_BUCKET"
+}
+
+# ssh into bastion host of current terraform state
+tf_bastion() {
+  issh taylor.daugherty@$(tf output bastion_public_ip)
+}
+
+google() {
+  if [ -z "$1" ]; then
+    echo "Current project: $(gcloud config get-value project 2> /dev/null)"
+    return 0
+  fi
+  export GOOGLE_PROJECT=$1
+  gcloud config set project $1
+}
+
+glist() {
+  local project=$1
+
+  if [ -z "$project" ]; then
+    project=$(gcloud config get-value project)
+  fi
+
+  echo "Instances for project: $project..."
+
+  gcloud compute instances list --limit=100 --project="$project"
+}
+
+cook() {
+  local chef_env
+
+  if [ -n "$1" ]; then
+    chef_env=$1
+  else
+    chef_env=$(gcloud config get-value project 2> /dev/null)
+  fi
+
+  if [ ! -d "$HOME/.chef/$chef_env"  ]; then
+    echo "Not a valid option for cooking! No directory found: $HOME/.chef/$chef_env"
+    return 1
+  fi
+
+  echo "You are now cooking with $chef_env! $(printf '\xF0\x9F\x8D\xB2')"
+  export CHEF_ENV=$chef_env
 }

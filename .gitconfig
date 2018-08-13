@@ -15,9 +15,10 @@
     recent  = for-each-ref --sort=-committerdate refs/remotes/ --count=20 --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
     co      = checkout
     unstage = reset HEAD --
-    undo = reset --soft HEAD^
-    prune = fetch --prune
-    blog = log --first-parent --no-merges --oneline
+    undo    = reset --soft HEAD^
+    prune   = fetch --prune
+    blog    = log --first-parent --no-merges --oneline
+    caa     = commit --amend -a -C HEAD --no-edit
 
 [merge "npm-merge-driver"]
     name = automatically merge npm lockfiles
