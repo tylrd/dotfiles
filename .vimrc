@@ -94,6 +94,7 @@ nnoremap <Tab> za
 autocmd FileType groovy,json,javascript,*.tf,ruby setlocal ts=2 sw=2 sts=2
 autocmd FileType sh setlocal ts=2 sw=2 sts=2
 autocmd FileType Jenkinsfile* setlocal ts=2 sw=2 sts=2
+autocmd filetype crontab setlocal nobackup nowritebackup
 
 syntax on
 
