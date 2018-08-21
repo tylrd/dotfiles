@@ -19,6 +19,7 @@
     prune   = fetch --prune
     blog    = log --first-parent --no-merges --oneline
     caa     = commit --amend -a -C HEAD --no-edit
+    caap    = !git caa && git push --force
 
 [merge "npm-merge-driver"]
     name = automatically merge npm lockfiles
