@@ -21,7 +21,7 @@ windows:
         - terraform:
           - SSH_USER=taylor.daugherty source bin/env
           - clear
-          - git fetch origin
+          - git fetch origin --prune --no-tags
   - chef:
       root: <%= workspace %>/platform-chef-repo
       layout: even-horizontal
@@ -30,7 +30,7 @@ windows:
         - chef:
           - cook
           - clear
-          - git fetch origin
+          - git fetch origin --prune --no-tags
   - cookbooks:
       root: <%= workspace %>/platform-cookbooks
       layout: even-horizontal
@@ -39,11 +39,11 @@ windows:
         - chef:
           - cook
           - clear
-          - git fetch origin
+          - git fetch origin --prune --no-tags
   - packer:
       root: <%= workspace %>/platform-packer-lib
       layout: even-horizontal
       panes:
         - vim .
         - packer:
-          - git fetch origin
+          - git fetch origin --prune --no-tags
