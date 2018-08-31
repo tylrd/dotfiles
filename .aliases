@@ -4,6 +4,8 @@ if which vim >/dev/null 2>&1; then
   alias vi="vim"
 fi
 
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
 alias mkdir="mkdir -pv"
 alias c="clear"
 alias rm="rm -iv"
@@ -29,9 +31,11 @@ alias t="tmux"
 alias tkill="tmux kill-session -t"
 
 # Google Cloud aliases
-alias gc="gcloud"
-alias gcp="gcloud config get-value project"
-alias gcps="gcloud config set project"
+if command -v gcloud &> /dev/null; then
+  alias gc="gcloud"
+  alias gcp="gcloud config get-value project"
+  alias gcps="gcloud config set project"
+fi
 
 # kills all tmux sessions
 alias kmux="tmux ls | awk '{ print \$1}' | tr -d ':' | xargs -I{} tmux kill-session -t {}"
@@ -126,4 +130,3 @@ alias dir="ls --format=vertical $COLORFLAG"
 # displays more information about files and directories
 alias vdir="ls --format=long $COLORFLAG"
 alias tmux="TERM=screen-256color-bce tmux"
-

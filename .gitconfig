@@ -39,10 +39,9 @@
 
 [merge]
     ff = only
-    conflictstyle = diff3
 
 [push]
-	default = current
+    default = current
 
 [status]
     showUntrackedFiles = all

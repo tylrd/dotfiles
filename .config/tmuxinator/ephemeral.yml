@@ -17,9 +17,11 @@ windows:
       root: <%= workspace %>/platform-terraform-lib
       layout: even-horizontal
       panes:
-        - vim .
+        - editor:
+          - source bin/env
+          - vim .
         - terraform:
-          - SSH_USER=taylor.daugherty source bin/env
+          - source bin/env
           - clear
           - git fetch origin --prune --no-tags
   - chef:
@@ -40,6 +42,7 @@ windows:
           - cook
           - clear
           - git fetch origin --prune --no-tags
+          - git supdate
   - packer:
       root: <%= workspace %>/platform-packer-lib
       layout: even-horizontal
