@@ -246,3 +246,7 @@ cook() {
   echo "You are now cooking with $chef_env! $(printf '\xF0\x9F\x8D\xB2')"
   export CHEF_ENV=$chef_env
 }
+
+gshow() {
+  git show $(git log --pretty=oneline | fzf | cut -d=' ' -f1)
+}

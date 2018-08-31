@@ -6,6 +6,8 @@ export CDPATH=.:~:~/Documents/code
 export EDITOR="vim"
 export VISUAL=$EDITOR
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
