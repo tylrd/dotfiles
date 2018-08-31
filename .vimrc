@@ -8,7 +8,23 @@ set scrolloff=8
 set number
 set relativenumber
 set laststatus=2
-set hidden
+
+" Remove 'set hidden'
+set nohidden
+
+" https://github.com/tpope/vim-vinegar/issues/13
+augroup netrw_buf_hidden_fix
+    autocmd!
+
+    " Set all non-netrw buffers to bufhidden=hide
+    autocmd BufWinEnter *
+                \  if &ft != 'netrw'
+                \|     set bufhidden=hide
+                \| endif
+
+augroup end
+
+set confirm
 set nocompatible
 set ts=4
 set sw=4
@@ -144,8 +160,6 @@ call plug#end()
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
 
-let g:netrw_liststyle=3
-
 " map <C-n> :NERDTreeToggle<CR>
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -154,7 +168,6 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='minimalist'
 
 nnoremap <silent> <C-p> :FZF<CR>
