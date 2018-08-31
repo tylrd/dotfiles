@@ -1,5 +1,8 @@
 let mapleader = " "
 
+syntax on
+filetype plugin indent on
+
 set clipboard=unnamed
 set scrolloff=8
 set number
@@ -40,7 +43,12 @@ set t_Co=16
 set undofile
 set undodir=~/.vim/undodir
 
-filetype plugin indent on
+" let's not do swapfiles, k?
+set noswapfile
+
+" donkey!
+set noerrorbells
+set vb t_vb=
 
 " Switch between last two files
 nnoremap <Leader>b <C-^>
@@ -56,12 +64,6 @@ nnoremap <Leader>r :source $MYVIMRC<CR>
 
 nnoremap <Leader>h :silent! nohls<cr>
 
-" window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
 " Quickly switch between buffers
 nnoremap <Leader><Left> :bprevious<CR>
 nnoremap <Leader><Right> :bnext<CR>
@@ -71,13 +73,6 @@ nnoremap <Leader><Leader> :noh<CR>
 
 " Copy rest of line to line above
 nnoremap <Leader>p DO<c-r>"<esc>
-
-" let's not do swapfiles, k?
-set noswapfile
-
-" donkey!
-set noerrorbells
-set vb t_vb=
 
 " Remap j and k to act as expected when used on long, wrapped, lines
 " https://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
@@ -96,18 +91,10 @@ autocmd FileType sh setlocal ts=2 sw=2 sts=2
 autocmd FileType Jenkinsfile* setlocal ts=2 sw=2 sts=2
 autocmd filetype crontab setlocal nobackup nowritebackup
 
-syntax on
-
 if exists('+colorcolumn')
   " Highlight up to 255 columns (this is the current Vim max) beyond 'textwidth'
   let &l:colorcolumn='+' . join(range(0, 254), ',+')
 endif
-
-set highlight+=c:LineNr
-set highlight+=N:DiffText
-set highlight+=@:ColorColumn
-set hlsearch
-let @/ = ""
 
 if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j                " remove comment leader when joining comment lines
@@ -125,29 +112,47 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'junegunn/vim-easy-align'
+Plug 'chriskempson/base16-vim'
+
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-Plug 'jiangmiao/auto-pairs'
-Plug 'scrooloose/nerdtree'
+
+Plug 'junegunn/vim-easy-align'
+
+" Plug 'jiangmiao/auto-pairs'
+
 Plug 'pangloss/vim-javascript'
 Plug 'fatih/vim-go'
 Plug 'hashivim/vim-terraform'
 Plug 'chr4/nginx.vim'
-Plug 'chriskempson/base16-vim'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+
 Plug 'airblade/vim-gitgutter'
+
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wincent/terminus'
-Plug 'martinda/Jenkinsfile-vim-syntax'
-" Plug 'mtth/scratch.vim'
+
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 call plug#end()
 
-map <C-n> :NERDTreeToggle<CR>
+
+""""""""""""""""""""""""""""""""""""""""
+" Plugin Configuration goes under here!
+""""""""""""""""""""""""""""""""""""""""
+
+let g:netrw_liststyle=3
+
+" map <C-n> :NERDTreeToggle<CR>
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='minimalist'
@@ -158,7 +163,6 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
-
 let g:go_version_warning = 0
 
 if filereadable(expand("~/.vimrc_background"))
@@ -168,6 +172,13 @@ endif
 
 set updatetime=100
 set timeoutlen=1000 ttimeoutlen=0
+
+set highlight+=c:LineNr
+set highlight+=N:DiffText
+set highlight+=@:ColorColumn
+set hlsearch
+let @/ = ""
+
 hi! MatchParen cterm=none ctermbg=black ctermfg=white
 hi! Error cterm=reverse ctermbg=white ctermfg=red
 
