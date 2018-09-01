@@ -101,7 +101,6 @@ nnoremap Y y$
 " Toggle folds
 nnoremap <Tab> za
 
-autocmd FileType groovy,json,javascript,*.tf,ruby,yaml,sh,Jenkinsfile* setlocal ts=2 sw=2 sts=2
 autocmd filetype crontab setlocal nobackup nowritebackup
 
 if exists('+colorcolumn')
@@ -119,13 +118,16 @@ set foldmethod=indent
 set nofoldenable
 
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'chriskempson/base16-vim'
+
+Plug 'sheerun/vim-polyglot'
+Plug 'vim-scripts/groovyindent-unix'
 
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -135,16 +137,11 @@ Plug 'tpope/vim-vinegar'
 Plug 'junegunn/vim-easy-align'
 
 " Plug 'jiangmiao/auto-pairs'
-
-Plug 'pangloss/vim-javascript'
-Plug 'fatih/vim-go'
-Plug 'hashivim/vim-terraform'
-Plug 'chr4/nginx.vim'
-Plug 'martinda/Jenkinsfile-vim-syntax'
+" https://github.com/jiangmiao/auto-pairs/issues/74
+Plug 'tylrd/auto-pairs'
 
 Plug 'airblade/vim-gitgutter'
 
-Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wincent/terminus'
@@ -157,7 +154,7 @@ call plug#end()
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
 
-" map <C-n> :NERDTreeToggle<CR>
+let g:AutoPairsMultilineClose=0
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -172,8 +169,6 @@ nnoremap <silent> <C-p> :FZF<CR>
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
-
-let g:go_version_warning = 0
 
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256

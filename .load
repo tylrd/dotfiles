@@ -33,7 +33,7 @@ export PAGER=${PAGER:-"less"}
 export EDITOR="vim"
 export VISUAL=$EDITOR
 
-export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+export FZF_DEFAULT_COMMAND='ag --follow --nocolor -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -47,8 +47,14 @@ export SUDO_PROMPT=${SUDO_PROMPT:-"[sudo] password for %u on %h: "}
 export HISTSIZE=${HISTSIZE:-32768} # resize history size
 export HISTFILESIZE=$HISTSIZE
 
-# ignore duplicates commands in the historylog
-export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoredups
+# https://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
+# Avoid duplicates
+export HISTCONTROL=ignoreboth:erasedups
+# When the shell exits, append to the history file instead of overwriting it
+shopt -s histappend
+
+# After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 # make some commands not show up in history
 export HISTIGNORE=${HISTIGNORE:-"shutdown*:halt*:poweroff*:hibernate*:rm -rf*"}
