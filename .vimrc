@@ -147,12 +147,24 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'wincent/terminus'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'mattn/calendar-vim'
+Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 call plug#end()
-
 
 """"""""""""""""""""""""""""""""""""""""
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
+
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+
+nmap <Leader>n <Plug>VimwikiIndex
+nmap <Leader>i <Plug>VimwikiDiaryIndex
+nmap <Leader>d <Plug>VimwikiMakeDiaryNote
+nmap <Leader>dt <Plug>VimwikiTabMakeDiaryNote
+nmap <Leader>dy <Plug>VimwikiMakeYesterdayDiaryNote
+nmap <Leader>c :Calendar<CR>
+
+let g:calendar_options = 'nornu'
 
 let g:AutoPairsMultilineClose=0
 
