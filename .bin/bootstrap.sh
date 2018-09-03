@@ -11,6 +11,15 @@ echo "Done!"
 
 separator
 
+echo "Cloning vimwiki..."
+
+if [ ! -d "$HOME/vimwiki" ]; then
+  mkdir -p "$HOME/vimwiki"
+  git clone "git@gitlab.com:tylrd/vimwiki.git" "$HOME/vimwiki"
+fi
+
+separator
+
 if [[ "$(uname)" == "Darwin" ]]; then
   if ! command -v brew >/dev/null; then
     echo "Installing Homebrew ..."
@@ -24,3 +33,5 @@ if [[ "$(uname)" == "Darwin" ]]; then
     echo "Done!"
   fi
 fi
+
+echo "Bootstrap finished!"

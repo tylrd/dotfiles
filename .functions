@@ -261,3 +261,11 @@ fzf_then_open_in_editor() {
   fi
 }
 bind -x '"\C-t": fzf_then_open_in_editor'
+
+wiki() {
+  if [ $# -eq 0 ]; then
+    vim "$HOME/vimwiki/index.md"
+  else
+    git --git-dir="$HOME/vimwiki/.git" --work-tree="$HOME/vimwiki" "$@"
+  fi
+}

@@ -42,8 +42,8 @@ set gdefault
 set mouse=a
 set background=dark
 set cursorline
-set textwidth=120
-set colorcolumn=120
+set textwidth=100
+set colorcolumn=100
 
 set autoindent
 set backspace=indent,eol,start
@@ -127,6 +127,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'chriskempson/base16-vim'
 
 Plug 'sheerun/vim-polyglot'
+
 Plug 'vim-scripts/groovyindent-unix'
 
 Plug 'tpope/vim-commentary'
@@ -160,7 +161,6 @@ let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}
 nmap <Leader>n <Plug>VimwikiIndex
 nmap <Leader>i <Plug>VimwikiDiaryIndex
 nmap <Leader>d <Plug>VimwikiMakeDiaryNote
-nmap <Leader>dt <Plug>VimwikiTabMakeDiaryNote
 nmap <Leader>dy <Plug>VimwikiMakeYesterdayDiaryNote
 nmap <Leader>c :Calendar<CR>
 
