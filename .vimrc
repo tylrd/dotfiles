@@ -9,6 +9,12 @@ set number
 set relativenumber
 set laststatus=2
 
+" When on, Vim will change the current working directory whenever you
+" open a file, switch buffers, delete a buffer or open/close a window.
+" It will change to the directory containing the file which was opened
+" or selected.
+set autochdir
+
 " Remove 'set hidden'
 set nohidden
 
