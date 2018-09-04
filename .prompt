@@ -8,30 +8,30 @@ GIT_PS1_SHOWCOLORHINTS=1
 
 PROMPT_COMMAND="__prompt_command;"
 
-# get_envs() {
-#   prompt=""
-#   local cyan='\[\e[1;36m\]'
-#   local green='\[\e[0;32m\]'
+get_envs() {
+  prompt=""
+  local cyan='\[\e[1;36m\]'
+  local green='\[\e[0;32m\]'
 
-#   if [ -z "$GOOGLE_PROJECT" ] && [ -z "$CHEF_ENV" ]; then
-#     return
-#   fi
+  if [ -z "$GOOGLE_PROJECT" ] && [ -z "$CHEF_ENV" ]; then
+    return
+  fi
 
-#   if [ "$GOOGLE_PROJECT" = "$CHEF_ENV" ]; then
-#     prompt+=" ${cyan}[${GOOGLE_PROJECT}] $(printf '\xE2\x9C\xA8')"
-#   else
-#     if [ -n "$GOOGLE_PROJECT" ]; then
-#       prompt+=" ${green}( gcp: $GOOGLE_PROJECT )"
-#     fi
+  if [ "$GOOGLE_PROJECT" = "$CHEF_ENV" ]; then
+    prompt+=" ${cyan}[${GOOGLE_PROJECT}] $(printf '\xE2\x9C\xA8')"
+  else
+    if [ -n "$GOOGLE_PROJECT" ]; then
+      prompt+=" ${green}( gcp: $GOOGLE_PROJECT )"
+    fi
 
-#     if [ -n "$CHEF_ENV" ]; then
-#       prompt+=" ${green}( chef: $CHEF_ENV )"
-#     fi
+    if [ -n "$CHEF_ENV" ]; then
+      prompt+=" ${green}( chef: $CHEF_ENV )"
+    fi
 
-#   fi
+  fi
 
-#   echo "$prompt"
-# }
+  echo "$prompt"
+}
 
 __prompt_command() {
     local curr_exit="$?"
@@ -50,5 +50,5 @@ __prompt_command() {
 
     pwd2=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";IFS=/; for q in ${p:1}; do printf /${q:0:1}; done; printf "${q:1}")
 
-    PS1+="${RCol}@\h:${Blu}$pwd2${BYel}$(__git_ps1 " (%s)") ${RCol}\n$ "
+    PS1+="${RCol}@\h:${Blu}$pwd2${BYel}$(__git_ps1 " (%s)") $(get_envs) ${RCol}\n$ "
 }

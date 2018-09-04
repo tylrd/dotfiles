@@ -217,16 +217,6 @@ let g:limelight_conceal_ctermfg = 240
 
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
-function! s:auto_goyo()
-  if &ft == 'markdown'
-    Goyo 80
-  elseif exists('#goyo')
-    let bufnr = bufnr('%')
-    Goyo!
-    execute 'b '.bufnr
-  endif
-endfunction
-
 function! s:goyo_enter()
   silent !tmux set status off
   silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
@@ -237,6 +227,10 @@ function! s:goyo_enter()
   set scrolloff=999
   colorscheme pencil
   Limelight
+  let b:quitting = 0
+  let b:quitting_bang = 0
+  autocmd QuitPre <buffer> let b:quitting = 1
+  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
 endfunction
 
 function! s:goyo_leave()
@@ -253,10 +247,27 @@ function! s:goyo_leave()
   set hlsearch
   let @/ = ""
   Limelight!
+  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    if b:quitting_bang
+      qa!
+    else
+      qa
+    endif
+  endif
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+function! s:auto_goyo()
+  if &ft == 'markdown'
+    Goyo 80
+  elseif exists('#goyo')
+    let bufnr = bufnr('%')
+    Goyo!
+    execute 'b '.bufnr
+  endif
+endfunction
 
 augroup goyo_markdown
   autocmd!
