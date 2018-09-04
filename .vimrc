@@ -247,11 +247,11 @@ function! s:goyo_leave()
   set hlsearch
   let @/ = ""
   Limelight!
-  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+  if b:quitting
     if b:quitting_bang
-      qa!
+      wqa!
     else
-      qa
+      wqa
     endif
   endif
 endfunction

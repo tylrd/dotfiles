@@ -130,3 +130,4 @@ alias dir="ls --format=vertical $COLORFLAG"
 # displays more information about files and directories
 alias vdir="ls --format=long $COLORFLAG"
 alias tmux="TERM=screen-256color-bce tmux"
+alias diary="vim +:VimwikiMakeDiaryNote"

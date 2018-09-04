@@ -50,5 +50,5 @@ __prompt_command() {
 
     pwd2=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";IFS=/; for q in ${p:1}; do printf /${q:0:1}; done; printf "${q:1}")
 
-    PS1+="${RCol}@\h:${Blu}$pwd2${BYel}$(__git_ps1 " (%s)") $(get_envs) ${RCol}\n$ "
+    PS1+="${RCol}@\h:${Blu}$pwd2${BYel}$(__git_ps1 " (%s)")$(get_envs) ${RCol}\n$ "
 }
