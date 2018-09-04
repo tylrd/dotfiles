@@ -8,6 +8,7 @@ set scrolloff=8
 set number
 set relativenumber
 set laststatus=2
+set lazyredraw
 
 " When on, Vim will change the current working directory whenever you
 " open a file, switch buffers, delete a buffer or open/close a window.
@@ -47,7 +48,7 @@ set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
 set gdefault
 set mouse=a
 set background=dark
-set cursorline
+" set cursorline
 set textwidth=100
 set colorcolumn=100
 
@@ -59,7 +60,12 @@ set smarttab
 set incsearch
 set wildmenu
 set history=1000
-set t_Co=16
+
+set cursorline
+
+if !has('gui_running')
+  set t_Co=256
+endif
 
 " persistent undo
 set undofile
@@ -71,6 +77,31 @@ set noswapfile
 " donkey!
 set noerrorbells
 set vb t_vb=
+
+" set updatetime=100
+" set timeoutlen=1000 ttimeoutlen=0
+
+set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
+
+highlight CursorLine cterm=bold ctermbg=235 guibg=Grey40
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+highlight StatusLine   cterm=NONE ctermbg=235 ctermfg=white
+highlight StatusLineNC cterm=NONE ctermbg=235 ctermfg=white
+
+if exists('+colorcolumn')
+  " Highlight up to 255 columns (this is the current Vim max) beyond 'textwidth'
+  let &l:colorcolumn='+' . join(range(0, 254), ',+')
+endif
+
+set highlight+=c:LineNr
+set highlight+=@:ColorColumn
+
+highlight LineNr ctermfg=235
+set hlsearch
+let @/ = ""
+
+hi! MatchParen cterm=none ctermbg=black ctermfg=white
+hi! Error cterm=reverse ctermbg=white ctermfg=red
 
 " Switch between last two files
 nnoremap <Leader>b <C-^>
@@ -107,12 +138,17 @@ nnoremap Y y$
 " Toggle folds
 nnoremap <Tab> za
 
-autocmd filetype crontab setlocal nobackup nowritebackup
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
 
-if exists('+colorcolumn')
-  " Highlight up to 255 columns (this is the current Vim max) beyond 'textwidth'
-  let &l:colorcolumn='+' . join(range(0, 254), ',+')
-endif
+nmap \q :nohlsearch<CR>
+nmap \t :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<CR>
+nmap \x :cclose<CR>
+nmap \g :Gstatus<CR>
+
+autocmd filetype crontab setlocal nobackup nowritebackup
 
 if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j                " remove comment leader when joining comment lines
@@ -130,12 +166,14 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'chriskempson/base16-vim'
-
 Plug 'sheerun/vim-polyglot'
-
 Plug 'vim-scripts/groovyindent-unix'
 
+" Pairs of handy bracket mappings
+Plug 'tpope/vim-unimpaired'
+
+" Helpers for UNIX
+Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -143,17 +181,24 @@ Plug 'tpope/vim-vinegar'
 
 Plug 'junegunn/vim-easy-align'
 
-" Plug 'jiangmiao/auto-pairs'
 " https://github.com/jiangmiao/auto-pairs/issues/74
 Plug 'tylrd/auto-pairs'
 
 Plug 'airblade/vim-gitgutter'
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'wincent/terminus'
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" prose
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+
+Plug 'itchyny/lightline.vim'
+
+" wiki
+Plug 'reedes/vim-colors-pencil'
+
 Plug 'mattn/calendar-vim'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 call plug#end()
@@ -162,7 +207,61 @@ call plug#end()
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
 
+" Lightline
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ }
+
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+
+function! s:auto_goyo()
+  if &ft == 'markdown'
+    Goyo 80
+  elseif exists('#goyo')
+    let bufnr = bufnr('%')
+    Goyo!
+    execute 'b '.bufnr
+  endif
+endfunction
+
+function! s:goyo_enter()
+  silent !tmux set status off
+  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  set noshowmode
+  set noshowcmd
+  set nocursorline
+  set tw=0
+  set scrolloff=999
+  colorscheme pencil
+  Limelight
+endfunction
+
+function! s:goyo_leave()
+  silent !tmux set status on
+  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  set showmode
+  set showcmd
+  set scrolloff=5
+  highlight CursorLine cterm=bold ctermbg=235 guibg=Grey40
+  highlight ColorColumn ctermbg=235 guibg=#2c2d27
+  highlight LineNr ctermfg=235
+  set highlight+=c:LineNr
+  set highlight+=@:ColorColumn
+  set hlsearch
+  let @/ = ""
+  Limelight!
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+augroup goyo_markdown
+  autocmd!
+  autocmd BufNewFile,BufRead * call s:auto_goyo()
+augroup END
 
 nmap <Leader>n <Plug>VimwikiIndex
 nmap <Leader>i <Plug>VimwikiDiaryIndex
@@ -180,29 +279,12 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-let g:airline_theme='minimalist'
-
-nnoremap <silent> <C-p> :FZF<CR>
+" FZF bindings
+nmap ; :Buffers<CR>
+nmap <silent> <C-t> :Files<CR>
+nmap <Leader>a :Ag<CR>
 
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-
-set updatetime=100
-set timeoutlen=1000 ttimeoutlen=0
-
-set highlight+=c:LineNr
-set highlight+=N:DiffText
-set highlight+=@:ColorColumn
-set hlsearch
-let @/ = ""
-
-hi! MatchParen cterm=none ctermbg=black ctermfg=white
-hi! Error cterm=reverse ctermbg=white ctermfg=red
-
-" set wildignore+=*/.terraform/*,*/node_modules/*,*.swp,*.so,*.zip,*/.gradle/*
