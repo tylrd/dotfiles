@@ -10,12 +10,6 @@ set relativenumber
 set laststatus=2
 set lazyredraw
 
-" When on, Vim will change the current working directory whenever you
-" open a file, switch buffers, delete a buffer or open/close a window.
-" It will change to the directory containing the file which was opened
-" or selected.
-set autochdir
-
 " Remove 'set hidden'
 set nohidden
 
@@ -27,6 +21,7 @@ augroup netrw_buf_hidden_fix
     autocmd BufWinEnter *
                 \  if &ft != 'netrw'
                 \|     set bufhidden=hide
+                \|     let &l:colorcolumn='+' . join(range(0, 254), ',+')
                 \| endif
 
 augroup end
@@ -78,8 +73,8 @@ set noswapfile
 set noerrorbells
 set vb t_vb=
 
-" set updatetime=100
-" set timeoutlen=1000 ttimeoutlen=0
+set updatetime=100
+set timeoutlen=1000 ttimeoutlen=0
 
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
 
@@ -88,13 +83,11 @@ highlight ColorColumn ctermbg=235 guibg=#1C262B
 highlight StatusLine   cterm=NONE ctermbg=235 ctermfg=white
 highlight StatusLineNC cterm=NONE ctermbg=235 ctermfg=white
 
-if exists('+colorcolumn')
-  " Highlight up to 255 columns (this is the current Vim max) beyond 'textwidth'
-  let &l:colorcolumn='+' . join(range(0, 254), ',+')
-endif
+" Highlight up to 255 columns (this is the current Vim max) beyond 'textwidth'
+let &l:colorcolumn='+' . join(range(0, 254), ',+')
 
 set highlight+=c:LineNr
-set highlight+=@:ColorColumn
+" set highlight+=@:ColorColumn
 
 highlight LineNr ctermfg=235
 set hlsearch
@@ -187,18 +180,13 @@ Plug 'tylrd/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 Plug 'wincent/terminus'
 
-" prose
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 Plug 'itchyny/lightline.vim'
+Plug 'junegunn/limelight.vim'
 
 " wiki
-Plug 'reedes/vim-colors-pencil'
-
 Plug 'mattn/calendar-vim'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 call plug#end()
@@ -216,65 +204,6 @@ let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 240
 
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
-
-let g:pencil_higher_contrast_ui = 1
-
-" Quitting whether Goyo is active or not
-ca wq :w<cr>:call Quit()<cr>
-ca q :call Quit()<cr>
-
-function! Quit()
-    if exists('#goyo')
-        Goyo
-    endif
-    quit
-endfunction
-
-function! s:goyo_enter()
-  silent !tmux set status off
-  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  set noshowmode
-  set noshowcmd
-  set nocursorline
-  set tw=0
-  set scrolloff=999
-  colorscheme pencil
-  Limelight
-endfunction
-
-function! s:goyo_leave()
-  silent !tmux set status on
-  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  set showmode
-  set showcmd
-  set scrolloff=5
-  highlight CursorLine cterm=bold ctermbg=235 guibg=Grey40
-  highlight ColorColumn ctermbg=235 guibg=#2c2d27
-  highlight LineNr ctermfg=235
-  set highlight+=c:LineNr
-  set highlight+=@:ColorColumn
-  set hlsearch
-  let @/ = ""
-  Limelight!
-endfunction
-
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
-function! s:auto_goyo()
-  if &ft == 'markdown'
-    Goyo 80
-  elseif exists('#goyo')
-    let bufnr = bufnr('%')
-    Goyo!
-    execute 'b '.bufnr
-  endif
-endfunction
-
-augroup goyo_markdown
-  autocmd!
-  autocmd BufNewFile,BufRead * call s:auto_goyo()
-augroup END
 
 nmap <Leader>n <Plug>VimwikiIndex
 nmap <Leader>i <Plug>VimwikiDiaryIndex
