@@ -84,7 +84,7 @@ set vb t_vb=
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
 
 highlight CursorLine cterm=bold ctermbg=235 guibg=Grey40
-highlight ColorColumn ctermbg=235 guibg=#2c2d27
+highlight ColorColumn ctermbg=235 guibg=#1C262B
 highlight StatusLine   cterm=NONE ctermbg=235 ctermfg=white
 highlight StatusLineNC cterm=NONE ctermbg=235 ctermfg=white
 
@@ -217,6 +217,19 @@ let g:limelight_conceal_ctermfg = 240
 
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
+let g:pencil_higher_contrast_ui = 1
+
+" Quitting whether Goyo is active or not
+ca wq :w<cr>:call Quit()<cr>
+ca q :call Quit()<cr>
+
+function! Quit()
+    if exists('#goyo')
+        Goyo
+    endif
+    quit
+endfunction
+
 function! s:goyo_enter()
   silent !tmux set status off
   silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
@@ -227,10 +240,6 @@ function! s:goyo_enter()
   set scrolloff=999
   colorscheme pencil
   Limelight
-  let b:quitting = 0
-  let b:quitting_bang = 0
-  autocmd QuitPre <buffer> let b:quitting = 1
-  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
 endfunction
 
 function! s:goyo_leave()
@@ -247,13 +256,6 @@ function! s:goyo_leave()
   set hlsearch
   let @/ = ""
   Limelight!
-  if b:quitting
-    if b:quitting_bang
-      wqa!
-    else
-      wqa
-    endif
-  endif
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
