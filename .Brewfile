@@ -7,6 +7,8 @@ if !ARGV.include?("--casks")
     brew 'bash'
     brew 'tree'
     brew 'coreutils'
+    brew 'fzf'
+    brew 'ripgrep'
     brew 'jq'
     brew 'diffutils'
     brew 'vim'
@@ -23,9 +25,7 @@ if !ARGV.include?("--casks")
     brew 'tmux'
     brew 'reattach-to-user-namespace'
     brew 'go'
-    brew 'the_silver_searcher'
     brew 'shellcheck'
-    brew 'fzf'
 end
 
 if ARGV.include?("--casks")

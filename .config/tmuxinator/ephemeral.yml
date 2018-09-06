@@ -42,7 +42,6 @@ windows:
           - cook
           - clear
           - git fetch origin --prune --no-tags
-          - git supdate
   - packer:
       root: <%= workspace %>/platform-packer-lib
       layout: even-horizontal
