@@ -162,9 +162,20 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'sheerun/vim-polyglot'
+" Language Packs
+Plug 'fatih/vim-go'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'tpope/vim-git'
+Plug 'pangloss/vim-javascript'
+Plug 'chr4/nginx.vim'
+Plug 'vim-python/python-syntax'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'hashivim/vim-terraform'
+Plug 'leafgarland/typescript-vim'
+Plug 'elzr/vim-json'
 Plug 'vim-scripts/groovyindent-unix'
 
+" tpop
 " Pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
 
@@ -175,23 +186,28 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 
+" align blocks of text
 Plug 'junegunn/vim-easy-align'
 
 " https://github.com/jiangmiao/auto-pairs/issues/74
 Plug 'tylrd/auto-pairs'
 
 Plug 'airblade/vim-gitgutter'
+
+" better vim integration with terminal
 Plug 'wincent/terminus'
 
+" fuzzy find
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
+" status bar
 Plug 'itchyny/lightline.vim'
-Plug 'junegunn/limelight.vim'
 
 " wiki
-Plug 'mattn/calendar-vim'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
+Plug 'junegunn/limelight.vim'
+Plug 'mattn/calendar-vim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
