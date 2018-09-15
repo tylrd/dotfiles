@@ -47,7 +47,6 @@ set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
 set gdefault
 set mouse=a
 set background=dark
-" set cursorline
 set textwidth=100
 set colorcolumn=100
 
@@ -82,7 +81,7 @@ set timeoutlen=1000 ttimeoutlen=0
 
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
 
-highlight CursorLine cterm=bold ctermbg=235 guibg=Grey40
+highlight CursorLine cterm=NONE ctermbg=235 guibg=Grey40
 highlight ColorColumn ctermbg=235 guibg=#1C262B
 highlight StatusLine   cterm=NONE ctermbg=235 ctermfg=white
 highlight StatusLineNC cterm=NONE ctermbg=235 ctermfg=white
@@ -91,7 +90,7 @@ highlight StatusLineNC cterm=NONE ctermbg=235 ctermfg=white
 let &l:colorcolumn='+' . join(range(0, 254), ',+')
 
 set highlight+=c:LineNr
-" set highlight+=@:ColorColumn
+set highlight+=@:ColorColumn
 
 highlight LineNr ctermfg=235
 set hlsearch
