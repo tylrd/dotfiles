@@ -92,7 +92,7 @@ let &l:colorcolumn='+' . join(range(0, 254), ',+')
 set highlight+=c:LineNr
 set highlight+=@:ColorColumn
 
-highlight LineNr ctermfg=235
+highlight LineNr ctermfg=238
 set hlsearch
 let @/ = ""
 
@@ -144,6 +144,7 @@ nmap \x :cclose<CR>
 nmap \g :Gstatus<CR>
 
 autocmd filetype crontab setlocal nobackup nowritebackup
+autocmd BufRead,BufNewFile Berksfile* set filetype=ruby
 
 if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j                " remove comment leader when joining comment lines
@@ -173,6 +174,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'leafgarland/typescript-vim'
 Plug 'elzr/vim-json'
 Plug 'vim-scripts/groovyindent-unix'
+Plug 'stephpy/vim-yaml'
 
 " tpop
 " Pairs of handy bracket mappings
