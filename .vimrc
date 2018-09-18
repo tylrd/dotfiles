@@ -215,8 +215,6 @@ call plug#end()
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
 
-let g:netrw_liststyle = 3
-
 " Lightline
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
