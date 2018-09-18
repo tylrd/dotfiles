@@ -99,6 +99,8 @@ let @/ = ""
 hi! MatchParen cterm=none ctermbg=black ctermfg=white
 hi! Error cterm=reverse ctermbg=white ctermfg=red
 
+autocmd BufRead,BufNewFile Berksfile set filetype=ruby
+
 " Switch between last two files
 nnoremap <Leader>b <C-^>
 
