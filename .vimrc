@@ -113,9 +113,6 @@ nnoremap <Leader><Right> :bnext<CR>
 " Turn off highlight searches
 nnoremap <Leader><Leader> :noh<CR>
 
-" Copy rest of line to line above
-nnoremap <Leader>p DO<c-r>"<esc>
-
 " Remap j and k to act as expected when used on long, wrapped, lines
 " https://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
 nnoremap <expr> j v:count ? 'j' : 'gj'
@@ -123,6 +120,7 @@ nnoremap <expr> k v:count ? 'k' : 'gk'
 
 " Yank to end of line
 nnoremap Y y$
+
 
 " Toggle folds
 nnoremap <Tab> za
@@ -166,7 +164,6 @@ Plug 'vim-python/python-syntax'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'hashivim/vim-terraform'
 Plug 'leafgarland/typescript-vim'
-Plug 'elzr/vim-json'
 Plug 'vim-scripts/groovyindent-unix'
 Plug 'stephpy/vim-yaml'
 
