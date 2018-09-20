@@ -25,7 +25,7 @@ augroup netrw_buf_hidden_fix
     autocmd BufWinEnter *
                 \  if &ft != 'netrw'
                 \|     set bufhidden=hide
-                \|     let &l:colorcolumn='+' . join(range(0, 254), ',+')
+                " \|     let &l:colorcolumn='+' . join(range(0, 254), ',+')
                 \| endif
 
 augroup end
@@ -59,8 +59,6 @@ set incsearch
 set wildmenu
 set history=1000
 
-set cursorline
-
 if !has('gui_running')
   set t_Co=256
 endif
@@ -81,13 +79,7 @@ set timeoutlen=1000 ttimeoutlen=0
 
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
 
-highlight CursorLine cterm=NONE ctermbg=235 guibg=Grey40
 highlight ColorColumn ctermbg=235 guibg=#1C262B
-highlight StatusLine   cterm=NONE ctermbg=235 ctermfg=white
-highlight StatusLineNC cterm=NONE ctermbg=235 ctermfg=white
-
-" Highlight up to 255 columns (this is the current Vim max) beyond 'textwidth'
-let &l:colorcolumn='+' . join(range(0, 254), ',+')
 
 set highlight+=c:LineNr
 set highlight+=@:ColorColumn
