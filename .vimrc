@@ -241,7 +241,7 @@ command! ProjectFiles execute 'Files' s:find_git_root()
 " FZF bindings
 nmap ; :Buffers<CR>
 nmap <silent> <C-t> :ProjectFiles<CR>
-nmap <Leader>a :Ag<CR>
+nmap <silent> <C-f> :Ag<CR>
 
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)

@@ -260,6 +260,7 @@ fzf_then_open_in_editor() {
     ${EDITOR:-vim} "$file"
   fi
 }
+
 bind -x '"\C-t": fzf_then_open_in_editor'
 
 wiki() {
