@@ -8,6 +8,7 @@ set scrolloff=8
 set number
 set relativenumber
 set laststatus=2
+set ttyfast
 set lazyredraw
 
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:
@@ -25,7 +26,6 @@ augroup netrw_buf_hidden_fix
     autocmd BufWinEnter *
                 \  if &ft != 'netrw'
                 \|     set bufhidden=hide
-                " \|     let &l:colorcolumn='+' . join(range(0, 254), ',+')
                 \| endif
 
 augroup end
@@ -232,9 +232,15 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+function! s:find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+
+command! ProjectFiles execute 'Files' s:find_git_root()
+
 " FZF bindings
 nmap ; :Buffers<CR>
-nmap <silent> <C-t> :Files<CR>
+nmap <silent> <C-t> :ProjectFiles<CR>
 nmap <Leader>a :Ag<CR>
 
 nmap <leader><tab> <plug>(fzf-maps-n)
