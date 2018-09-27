@@ -158,6 +158,7 @@ nmap \g :Gstatus<CR>
 
 autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd BufRead,BufNewFile Berksfile* set filetype=ruby
+autocmd BufNewFile,BufRead *.yml set filetype=yaml
 
 if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j                " remove comment leader when joining comment lines
