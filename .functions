@@ -276,7 +276,11 @@ bind -x '"\C-t": fzf_then_open_in_editor'
 cdf() {
   local file
   local dir
-  file=$(fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+  if git rev-parse --git-dir > /dev/null 2>&1; then
+    file=$(git ls-files $(git rev-parse --show-toplevel) | fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+  else
+    file=$(fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+  fi
 }
 
 wiki() {
