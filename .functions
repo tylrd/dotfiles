@@ -286,6 +286,15 @@ cdf() {
 
 bind -x '"\C-p": cdf'
 
+# Change directory into top level git directory
+cdup() {
+  if git rev-parse --git-dir > /dev/null 2>&1; then
+    cdup="$(git rev-parse --show-cdup)" && cd "${cdup:-.}"
+  else
+    echo "Not in git directory!"
+  fi
+}
+
 wiki() {
   if [ $# -eq 0 ]; then
     vim "$HOME/vimwiki/index.md"
