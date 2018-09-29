@@ -277,11 +277,14 @@ cdf() {
   local file
   local dir
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    file=$(git ls-files $(git rev-parse --show-toplevel) | fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+    file=$(git ls-files $(git rev-parse --show-toplevel) \
+      | fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir" && pwd
   else
-    file=$(fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+    file=$(fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir" && pwd
   fi
 }
+
+bind -x '"\C-p": cdf'
 
 wiki() {
   if [ $# -eq 0 ]; then
