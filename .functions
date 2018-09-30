@@ -256,17 +256,13 @@ fzf_then_open_in_editor() {
   local file
 
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    file=$(git ls-files $(git rev-parse --show-toplevel) | fzf --height 40%)
+    file=$(git ls-files --cached --others --exclude-standard $(git rev-parse --show-toplevel) | fzf --height 40%)
   else
     file=$(fzf --height 40%)
   fi
 
   if [ -n "$file" ]; then
-    # change directories to where the file is located
     file="$(realpath "$file")"
-    cd "$(dirname "$file")"
-
-    # Use the default editor if it's defined, otherwise Vim
     ${EDITOR:-vim} "$file"
   fi
 }
@@ -277,7 +273,7 @@ cdf() {
   local file
   local dir
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    file=$(git ls-files $(git rev-parse --show-toplevel) \
+    file=$(git ls-files --cached --others --exclude-standard $(git rev-parse --show-toplevel) \
       | fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir" && pwd
   else
     file=$(fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir" && pwd

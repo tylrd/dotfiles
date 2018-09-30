@@ -239,7 +239,7 @@ endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
 
 " FZF bindings
-nmap ; :Buffers<CR>
+nmap <silent> <C-p> :Buffers<CR>
 nmap <silent> <C-t> :ProjectFiles<CR>
 nmap <silent> <C-f> :Ag<CR>
 
