@@ -251,7 +251,8 @@ gshow() {
   git show $(git log --pretty=oneline | fzf | cut -d=' ' -f1)
 }
 
-# Search a file with fzf inside a Tmux pane and then open it in an editor
+# Search for file with fzf and then open it in an editor
+# If inside git directory, search in entire git repository
 fzf_then_open_in_editor() {
   local file
 
@@ -293,19 +294,17 @@ cdup() {
 
 fzf_search_and_open() {
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    file=$(rg --with-filename --no-heading ${1:-''} $(git rev-parse --show-cdup | sed 's:/*$::') | fzf)
+    line=$(rg --with-filename --no-heading --line-number ${1:-''} $(git rev-parse --show-cdup | sed 's:/*$::') | fzf)
   else
-    file=$(rg --with-filename --no-heading ${1:-''} | fzf)
+    line=$(rg --with-filename --no-heading --line-number ${1:-''} | fzf)
   fi
 
-  file=$(echo "$file" | cut -d: -f1)
-
-  if [ -n "$file" ]; then
-    ${EDITOR:-vim} "$file"
+  if [ -n "$line" ]; then
+    ${EDITOR:-vim} $(cut -d':' -f1 <<< "$line") +$(cut -d':' -f2 <<< "$line")
   fi
 }
 
-bind -x '"\C-x1": fzf_search_and_open'
+bind -x '"\C-f": fzf_search_and_open'
 
 wiki() {
   if [ $# -eq 0 ]; then

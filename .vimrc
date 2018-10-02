@@ -30,6 +30,20 @@ augroup netrw_buf_hidden_fix
 
 augroup end
 
+" https://github.com/thoughtbot/dotfiles/blob/master/vimrc
+augroup vimrcEx
+  autocmd!
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+augroup END
+
 set confirm
 set nocompatible
 set ts=4
@@ -92,6 +106,13 @@ hi! MatchParen cterm=none ctermbg=black ctermfg=white
 hi! Error cterm=reverse ctermbg=white ctermfg=red
 
 autocmd BufRead,BufNewFile Berksfile set filetype=ruby
+
+command! Q q " Bind :Q to :q
+command! Qall qall
+command! QA qall
+command! E e
+command! W w
+command! Wq wq
 
 " Switch between last two files
 nnoremap <Leader>b <C-^>
