@@ -272,12 +272,19 @@ bind -x '"\C-t": fzf_then_open_in_editor'
 
 cdf() {
   local file
-  local dir
+
   if git rev-parse --git-dir > /dev/null 2>&1; then
     file=$(fd . $(git rev-parse --show-cdup) | sed 's:/*$::' \
-      | fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir" && pwd
+      | fzf --height 40% +m -q "$1")
   else
-    file=$(fzf --height 40% +m -q "$1") && dir=$(dirname "$file") && cd "$dir" && pwd
+    file=$(fzf --height 40% +m -q "$1")
+  fi
+
+  if [ -d "$file" ]; then
+    cd "$file" && pwd
+  else
+    file=$(dirname "$file")
+    cd "$file" && pwd
   fi
 }
 
