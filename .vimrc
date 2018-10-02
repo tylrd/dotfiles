@@ -47,8 +47,8 @@ set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
 set gdefault
 set mouse=a
 set background=dark
-set textwidth=100
-set colorcolumn=100
+set textwidth=80
+set colorcolumn=80
 
 set autoindent
 set backspace=indent,eol,start
