@@ -110,7 +110,7 @@ kvagrant() {
 
 # must be run from terraform workspace with "bastion_public_ip" in output
 tssh() {
-  local ssh_user="${SSH_USER:-taylor.daugherty}"
+  local ssh_user="$(cat "$HOME/.ephemeral/ssh_user")"
   local hostname
 
   if [ "$#" -ne 1  ]; then
@@ -121,78 +121,22 @@ tssh() {
   fi
 
   local ssh_opts=(
-    -o ForwardAgent=yes
-    -o StrictHostKeyChecking=no
-    -o UserKnownHostsFile=/dev/null
+  -o ForwardAgent=yes
+  -o StrictHostKeyChecking=no
+  -o UserKnownHostsFile=/dev/null
   )
 
-  local bastion_ip=$(terraform output bastion_public_ip)
+  local response=$(gcloud compute instances describe bastion --format=json)
 
-  if [ -z "$bastion_ip" ]; then
-    echo "Could not find bastion ip in output."
+  if [ -n "$response" ]; then
+    local bastion_ip=$(echo "$response" | jq -r '.networkInterfaces[].accessConfigs[].natIP')
+  else
+    echo "No bastion host found for $(gcloud config get-value project)"
     return 1
   fi
 
   local proxy_command="ssh ${ssh_opts[@]} %r@$bastion_ip -W %h:%p"
   ssh "${ssh_opts[@]}" -o ProxyCommand="$proxy_command" $ssh_user@$hostname
-}
-
-
-# Runs chef-client for a given chef role in ephemeral environment
-tk() {
-  local role=$1
-
-  if [ -z "$role" ]; then
-    echo "Must provide role"
-    return 1
-  fi
-
-  local project=$(gcloud config get-value project 2> /dev/null)
-
-  if [ -z "$project" ]; then
-    echo "Could not obtain google project with gcloud."
-    return 1
-  fi
-
-  local bastion_ip=$(terraform output bastion_public_ip)
-
-  if [ -z "$bastion_ip" ]; then
-    echo "Could not find bastion ip in output."
-    return 1
-  fi
-
-  local environment="ephemeral-${project: -1}"
-
-  echo "Running chef client with role $role, in project $project & environment $environment..."
-
-  local command="${2:-"sudo chef-client -E $environment"}"
-
-  knife ssh "roles:$role" "$command" \
-    -A -x taylor.daugherty --ssh-gateway "$bastion_ip" \
-    --no-host-key-verify
-}
-
-bc_inst() {
-    local filter="$1"
-    shift
-
-    gcloud --project=bettercloud-non-prod \
-        compute instances list \
-        --sort-by=name \
-        --filter="$filter" "$@"
-}
-
-eph_inst() {
-    local project_num="$1"
-    shift
-
-    local filter="$1"
-    shift
-
-    gcloud --project="bettercloud-ephemeral-${project_num}" \
-        compute instances list \
-        --sort-by=name \
-        --filter="$filter" "$@"
 }
 
 eph_init() {
@@ -201,20 +145,6 @@ eph_init() {
     return 1
   fi
   terraform init -backend-config="bucket=$TF_BUCKET"
-}
-
-# ssh into bastion host of current terraform state
-tf_bastion() {
-  issh taylor.daugherty@$(tf output bastion_public_ip)
-}
-
-google() {
-  if [ -z "$1" ]; then
-    echo "Current project: $(gcloud config get-value project 2> /dev/null)"
-    return 0
-  fi
-  export GOOGLE_PROJECT=$1
-  gcloud config set project $1
 }
 
 glist() {
@@ -235,7 +165,7 @@ cook() {
   if [ -n "$1" ]; then
     chef_env=$1
   else
-    chef_env=$(gcloud config get-value project 2> /dev/null)
+    chef_env=$(gcloud config get-value project)
   fi
 
   if [ ! -d "$HOME/.chef/$chef_env"  ]; then
@@ -257,7 +187,7 @@ fzf_then_open_in_editor() {
   local file
 
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    file=$(fd . $(git rev-parse --show-cdup | sed 's:/*$::') | fzf --height 40%)
+    file=$(fd --type f . $(git rev-parse --show-cdup | sed 's:/*$::') | fzf --height 40%)
   else
     file=$(fzf --height 40%)
   fi
@@ -281,10 +211,10 @@ cdf() {
   fi
 
   if [ -d "$file" ]; then
-    cd "$file" && pwd
+    cd "$file"
   else
     file=$(dirname "$file")
-    cd "$file" && pwd
+    cd "$file"
   fi
 }
 
