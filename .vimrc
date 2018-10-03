@@ -245,6 +245,7 @@ nmap <Leader>dy <Plug>VimwikiMakeYesterdayDiaryNote
 nmap <Leader>c :Calendar<CR>
 
 let g:calendar_options = 'nornu'
+let g:go_version_warning = 0
 
 let g:AutoPairsMultilineClose=0
 
