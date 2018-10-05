@@ -5,7 +5,7 @@ function killp () {
   then
     echo usage: killp portNumber1 portNumber2 ...
   else
-    for i;do
+    for i; do
       PROCESS=$(lsof -t -i:$i)
       if [[ $PROCESS ]]; then
         kill -9 $PROCESS
@@ -14,35 +14,13 @@ function killp () {
         echo "No process found for port $i"
       fi
     done
-  fi;
+  fi
 }
 
 mkd() {
   mkdir -p "$@"
   cd "$@" || exit
 }
-
-# Determine size of a file or total size of a directory
-fs() {
-  if du -b /dev/null > /dev/null 2>&1; then
-    local arg=-sbh
-  else
-    local arg=-sh
-  fi
-  # shellcheck disable=SC2199
-  if [[ -n "$@" ]]; then
-    du $arg -- "$@"
-  else
-    du $arg -- .[^.]* *
-  fi
-}
-
-# Use Git’s colored diff when available
-if hash git &>/dev/null ; then
-  diff() {
-    git diff --no-index --color-words "$@"
-  }
-fi
 
 # Create a data URL from a file
 dataurl() {
