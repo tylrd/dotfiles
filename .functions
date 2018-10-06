@@ -91,11 +91,12 @@ tssh() {
   local ssh_user="$(cat "$HOME/.ephemeral/ssh_user")"
   local hostname
 
-  if [ "$#" -ne 1  ]; then
+  if [ "$#" -lt 1  ]; then
     echo "Must provide 1 argument => hostname"
     return 1
   else
     hostname=$1
+    shift
   fi
 
   local ssh_opts=(
@@ -114,7 +115,7 @@ tssh() {
   fi
 
   local proxy_command="ssh ${ssh_opts[@]} %r@$bastion_ip -W %h:%p"
-  ssh "${ssh_opts[@]}" -o ProxyCommand="$proxy_command" $ssh_user@$hostname
+  ssh "${ssh_opts[@]}" -o ProxyCommand="$proxy_command" $ssh_user@$hostname "$@"
 }
 
 eph_init() {
