@@ -16,6 +16,7 @@ alias g="git"
 alias grep="grep --color=auto"
 alias vimrc="vim ~/.vimrc"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+alias dc="docker-compose"
 
 # Insecure ssh; only use this for sites you **DEFINITELY** trust
 # Seriously...

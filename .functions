@@ -63,7 +63,7 @@ dssh() {
     exit 1
   fi
 
-  docker exec -it "${container}" /bin/bash
+  docker exec -it "${container}" sh
 }
 
 dkill() {
@@ -183,10 +183,10 @@ cdf() {
   local file
 
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    file=$(fd . $(git rev-parse --show-cdup) | sed 's:/*$::' \
+    file=$(fd --type d . $(git rev-parse --show-cdup) | sed 's:/*$::' \
       | fzf --height 40% +m -q "$1")
   else
-    file=$(fzf --height 40% +m -q "$1")
+    file=$(fd --type d . | fzf --height 40% +m -q "$1")
   fi
 
   if [ -d "$file" ]; then
@@ -228,4 +228,13 @@ wiki() {
   else
     git --git-dir="$HOME/vimwiki/.git" --work-tree="$HOME/vimwiki" "$@"
   fi
+}
+
+tf_switch() {
+  if [ -z "$1" ]; then
+    "Usage: tf_switch <project>"
+    return
+  fi
+  gcps $1
+  cdup && source bin/env && find . -name .terraform -type d -exec rm -rf {} + && cd -
 }
