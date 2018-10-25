@@ -5,6 +5,7 @@ if which vim >/dev/null 2>&1; then
 fi
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias fe_nginx='/usr/local/bin/nginx -c /usr/local/etc/nginx/nginx.conf.FE'
 
 alias mkdir="mkdir -pv"
 alias c="clear"
