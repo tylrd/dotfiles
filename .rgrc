@@ -2,3 +2,6 @@
 --smart-case
 --follow
 --glob=!.git/*
+--glob=!node_modules/*
+--glob=!**/*/.terraform/*
+--glob=!package-lock.json

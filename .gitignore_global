@@ -171,3 +171,4 @@ linux-*.deb
 .gradle/**/*
 **/.gradle/**/*
 *.iml
+nginx.*
