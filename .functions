@@ -173,6 +173,7 @@ fzf_then_open_in_editor() {
 
   if [ -n "$file" ]; then
     file="$(realpath "$file")"
+    history -s "vim $file"
     ${EDITOR:-vim} "$file"
   fi
 }
@@ -189,12 +190,12 @@ cdf() {
     file=$(fd --type d . | fzf --height 40% +m -q "$1")
   fi
 
-  if [ -d "$file" ]; then
-    cd "$file"
-  else
+  if [ ! -d "$file" ]; then
     file=$(dirname "$file")
-    cd "$file"
   fi
+
+  history -s "cd $file"
+  cd "$file"
 }
 
 bind -x '"\C-p": cdf'
@@ -216,7 +217,10 @@ fzf_search_and_open() {
   fi
 
   if [ -n "$line" ]; then
-    ${EDITOR:-vim} $(cut -d':' -f1 <<< "$line") +$(cut -d':' -f2 <<< "$line")
+    file=$(cut -d':' -f1 <<< "$line")
+    line=$(cut -d':' -f2 <<< "$line")
+    history -s "vim $file +$line"
+    ${EDITOR:-vim} $file +$line
   fi
 }
 
