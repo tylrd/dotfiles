@@ -172,3 +172,5 @@ linux-*.deb
 **/.gradle/**/*
 *.iml
 nginx.*
+**/tags
+.npmrc

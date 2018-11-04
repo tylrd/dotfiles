@@ -177,17 +177,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 " Language Packs
-Plug 'fatih/vim-go'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'tpope/vim-git'
-Plug 'pangloss/vim-javascript'
-Plug 'chr4/nginx.vim'
-Plug 'vim-python/python-syntax'
-Plug 'martinda/Jenkinsfile-vim-syntax'
-Plug 'hashivim/vim-terraform'
-Plug 'leafgarland/typescript-vim'
-Plug 'vim-scripts/groovyindent-unix'
-Plug 'stephpy/vim-yaml'
+Plug 'sheerun/vim-polyglot'
+Plug 'mattn/emmet-vim'
 
 " tpop
 " Pairs of handy bracket mappings
@@ -227,6 +218,12 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
+
+let g:user_emmet_settings = {
+\  'javascript' : {
+\      'extends' : 'jsx',
+\  },
+\}
 
 " Lightline
 let g:lightline = {
@@ -292,7 +289,6 @@ function! MaximizeToggle()
 endfunction
 
 " Fugitive
-
 set diffopt+=vertical
 
 nnoremap <Leader>ga :Git add %:p<CR><CR>
