@@ -3,6 +3,9 @@ let mapleader = " "
 syntax on
 filetype plugin indent on
 
+filetype plugin on
+source $VIMRUNTIME/macros/matchit.vim
+
 set clipboard=unnamed
 set scrolloff=8
 set number
@@ -179,6 +182,7 @@ call plug#begin('~/.vim/plugged')
 " Language Packs
 Plug 'sheerun/vim-polyglot'
 Plug 'mattn/emmet-vim'
+Plug 'alvan/vim-closetag'
 
 " tpop
 " Pairs of handy bracket mappings
@@ -218,6 +222,8 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
+
+ let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx"
 
 let g:user_emmet_settings = {
 \  'javascript' : {
