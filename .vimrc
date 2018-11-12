@@ -145,10 +145,6 @@ nnoremap <expr> k v:count ? 'k' : 'gk'
 " Yank to end of line
 nnoremap Y y$
 
-
-" Toggle folds
-nnoremap <Tab> za
-
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
