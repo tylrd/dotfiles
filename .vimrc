@@ -213,13 +213,15 @@ Plug 'itchyny/lightline.vim'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 Plug 'junegunn/limelight.vim'
 Plug 'mattn/calendar-vim'
+Plug 'Konfekt/FastFold'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
 
- let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx"
+let g:ruby_fold = 1
+let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx"
 
 let g:user_emmet_settings = {
 \  'javascript' : {
