@@ -1,25 +1,12 @@
-# Colors
-BASE16_SHELL=$HOME/.config/base16-shell
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
-# Secrets not checked into git
-[ -f $HOME/.secrets ] && source $HOME/.secrets
-
-# Generic bash completions via Brew
 if [ $SYSTEM_TYPE = "OSX" ]; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
-      . $(brew --prefix)/etc/bash_completion
+      source $(brew --prefix)/etc/bash_completion
     fi
 fi
 
-# Git completions
-[ -f $HOME/.git-completion.bash ] && source $HOME/.git-completion.bash
-
-# FZF completions
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/taylordaugherty/google-cloud-sdk/path.bash.inc' ]; then source '/Users/taylordaugherty/google-cloud-sdk/path.bash.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/taylordaugherty/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/taylordaugherty/google-cloud-sdk/completion.bash.inc'; fi
+if [ -f "$HOME/.local" ]; then source "$HOME/.local"; fi
+if [ -f "$HOME/.secrets" ]; then source "$HOME/.secrets"; fi
+if [ -f "$HOME/.git-completion.bash" ]; then source "$HOME/.git-completion.bash"; fi
+if [ -f "$HOME/.fzf.bash" ]; then source "$HOME/.fzf.bash"; fi
+if [ -f "$HOME/google-cloud-sdk/path.bash.inc" ]; then source "$HOME/google-cloud-sdk/path.bash.inc"; fi
+if [ -f '$HOME/google-cloud-sdk/completion.bash.inc' ]; then source "$HOME/google-cloud-sdk/completion.bash.inc"; fi
