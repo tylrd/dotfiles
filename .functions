@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function bclone() {
+  git clone "git@bitbucket.org:bettercloud/$1.git" --branch continuous --single-branch
+}
+
 function killp () {
   if (( $# == 0 ))
   then
@@ -241,4 +245,13 @@ tf_switch() {
   fi
   gcps $1
   cdup && source bin/env && find . -name .terraform -type d -exec rm -rf {} + && cd -
+}
+
+showcert() {
+  if [ -z "$1" ]; then
+    "Usage: showcert /path/to/cert.pem"
+    return
+  fi
+
+  openssl x509 -in $1 -noout -text
 }

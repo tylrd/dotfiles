@@ -64,8 +64,7 @@ set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
 set gdefault
 set mouse=a
 set background=dark
-set textwidth=80
-set colorcolumn=80
+set textwidth=150
 
 set autoindent
 set backspace=indent,eol,start
@@ -214,11 +213,15 @@ Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 Plug 'junegunn/limelight.vim'
 Plug 'mattn/calendar-vim'
 Plug 'Konfekt/FastFold'
+
+Plug 'nanotech/jellybeans.vim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
 " Plugin Configuration goes under here!
 """"""""""""""""""""""""""""""""""""""""
+
+colorscheme jellybeans
 
 let g:ruby_fold = 1
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx"

@@ -19,6 +19,11 @@ alias vimrc="vim ~/.vimrc"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias dc="docker-compose"
 
+
+alias download-xmain="mkdir dist && gsutil cat gs://bc-fe-deployment/metadata/all.json | jq '.latest.current' \
+    | xargs -I {} gsutil cat gs://bc-fe-deployment/artifact/all/{}.tar.gz \
+    | tar xzf - -C dist/"
+
 # Insecure ssh; only use this for sites you **DEFINITELY** trust
 # Seriously...
 alias issh="ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ForwardAgent=yes"
@@ -46,6 +51,7 @@ alias mux="tmuxinator"
 
 # Starts ephemeral session in tmux
 alias eph="tmuxinator start ephemeral"
+alias bc="tmuxinator start bettercloud"
 alias fe="tmuxinator start fe"
 
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"

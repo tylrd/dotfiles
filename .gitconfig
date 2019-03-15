@@ -1,6 +1,7 @@
 [user]
     name = Taylor Daugherty
     email = taylor.daugherty@bettercloud.com
+	signingkey = 0A10222A
 
 [core]
     editor = vim
