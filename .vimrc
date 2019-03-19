@@ -95,10 +95,10 @@ set timeoutlen=1000 ttimeoutlen=0
 
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
 
-highlight ColorColumn ctermbg=235 guibg=#1C262B
+" highlight ColorColumn ctermbg=235 guibg=#1C262B
 
 set highlight+=c:LineNr
-set highlight+=@:ColorColumn
+" set highlight+=@:ColorColumn
 
 highlight LineNr ctermfg=238
 set hlsearch
@@ -210,7 +210,7 @@ Plug 'itchyny/lightline.vim'
 
 " wiki
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-Plug 'junegunn/limelight.vim'
+" Plug 'junegunn/limelight.vim'
 Plug 'mattn/calendar-vim'
 Plug 'Konfekt/FastFold'
 
@@ -244,9 +244,6 @@ let g:user_emmet_settings = {
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
       \ }
-
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 240
 
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 

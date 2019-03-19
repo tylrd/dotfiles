@@ -7,7 +7,7 @@ setlocal colorcolumn=80
 
 setlocal wrap
 
-autocmd VimEnter * Limelight
+" autocmd VimEnter * Limelight
 
 " Restore original mappings:
 nmap <silent><buffer> = <nop>

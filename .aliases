@@ -19,11 +19,6 @@ alias vimrc="vim ~/.vimrc"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 alias dc="docker-compose"
 
-
-alias download-xmain="mkdir dist && gsutil cat gs://bc-fe-deployment/metadata/all.json | jq '.latest.current' \
-    | xargs -I {} gsutil cat gs://bc-fe-deployment/artifact/all/{}.tar.gz \
-    | tar xzf - -C dist/"
-
 # Insecure ssh; only use this for sites you **DEFINITELY** trust
 # Seriously...
 alias issh="ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ForwardAgent=yes"
@@ -37,6 +32,7 @@ alias srv="python3 -m http.server --bind=127.0.0.1"
 alias tf="terraform"
 alias t="tmux"
 alias tkill="tmux kill-session -t"
+alias k="kubectl"
 
 # Google Cloud aliases
 if command -v gcloud &> /dev/null; then
