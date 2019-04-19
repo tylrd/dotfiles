@@ -11,8 +11,8 @@ set scrolloff=8
 set number
 set relativenumber
 set laststatus=2
-set ttyfast
-set lazyredraw
+" set ttyfast
+" set lazyredraw
 
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:
 set splitbelow
@@ -97,10 +97,9 @@ set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
 
 " highlight ColorColumn ctermbg=235 guibg=#1C262B
 
-set highlight+=c:LineNr
+" set highlight+=c:LineNr
 " set highlight+=@:ColorColumn
 
-highlight LineNr ctermfg=238
 set hlsearch
 let @/ = ""
 
@@ -214,6 +213,7 @@ Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 Plug 'mattn/calendar-vim'
 Plug 'Konfekt/FastFold'
 
+Plug 'cocopon/iceberg.vim'
 Plug 'nanotech/jellybeans.vim'
 call plug#end()
 
@@ -230,6 +230,7 @@ if has('termguicolors') && &termguicolors
 endif
 
 colorscheme jellybeans
+" colorscheme iceberg
 
 let g:ruby_fold = 1
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx"
@@ -242,7 +243,7 @@ let g:user_emmet_settings = {
 
 " Lightline
 let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
+      \ 'colorscheme': 'iceberg',
       \ }
 
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
@@ -312,6 +313,21 @@ highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Re
 highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
 highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
 highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+
+" reset certain things to black
+hi! Normal ctermbg=000 ctermfg=252 guibg=#161821 guifg=#c6c8d1
+hi! LineNr ctermbg=000 ctermfg=239 guibg=#1e2132 guifg=#444b71
+" hi! CursorLineNr ctermbg=000 ctermfg=253 guibg=#2a3158 guifg=#cdd1e6
+" hi! EndOfBuffer ctermbg=000 ctermfg=236 guibg=#161821 guifg=#242940
+" hi! GitGutterAdd ctermbg=000 ctermfg=150 guibg=#1e2132 guifg=#b4be82
+" hi! GitGutterChange ctermbg=000 ctermfg=109 guibg=#1e2132 guifg=#89b8c2
+" hi! GitGutterChangeDelete ctermbg=000 ctermfg=109 guibg=#1e2132 guifg=#89b8c2
+" hi! GitGutterDelete ctermbg=000 ctermfg=203 guibg=#1e2132 guifg=#e27878
+
+let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
+let s:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
+let s:palette.inactive.middle = s:palette.normal.middle
+let s:palette.tabline.middle = s:palette.normal.middle
 
 vnoremap p "_dP
 nmap <Leader>p :let @*=expand("%")<CR>

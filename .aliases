@@ -32,7 +32,12 @@ alias srv="python3 -m http.server --bind=127.0.0.1"
 alias tf="terraform"
 alias t="tmux"
 alias tkill="tmux kill-session -t"
+
 alias k="kubectl"
+alias kx="kubectx"
+alias kn="kubens"
+alias kv="kubectl config current-context"
+alias ksh="kubectl run -i --tty busybox --image=busybox -- sh"
 
 # Google Cloud aliases
 if command -v gcloud &> /dev/null; then

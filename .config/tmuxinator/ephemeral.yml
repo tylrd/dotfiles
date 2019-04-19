@@ -1,14 +1,6 @@
 # ~/.tmuxinator/ephemeral.yml
 
-<% require 'socket'; host = Socket.gethostname %>
-<% if host == 'taylor-home.local' %>
-    <% workspace = '~/Documents/code' %>
-<% elsif host.start_with?('bc-') %>
-    <% workspace = '~/productivity/eph' %>
-<% else %>
-    <% p 'hostname not recognized, defaulting to ~/Documents/code' %>
-    <% workspace = '~/Documents/code' %>
-<% end %>
+<% workspace = '~/code/bettercloud.com/ephemeral' %>
 
 name: ephemeral
 root: <%= workspace %>

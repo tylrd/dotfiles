@@ -8,5 +8,4 @@ if [ -f "$HOME/.local" ]; then source "$HOME/.local"; fi
 if [ -f "$HOME/.secrets" ]; then source "$HOME/.secrets"; fi
 if [ -f "$HOME/.git-completion.bash" ]; then source "$HOME/.git-completion.bash"; fi
 if [ -f "$HOME/.fzf.bash" ]; then source "$HOME/.fzf.bash"; fi
-if [ -f "$HOME/google-cloud-sdk/path.bash.inc" ]; then source "$HOME/google-cloud-sdk/path.bash.inc"; fi
 if [ -f '$HOME/google-cloud-sdk/completion.bash.inc' ]; then source "$HOME/google-cloud-sdk/completion.bash.inc"; fi

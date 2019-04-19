@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function bclone() {
-  git clone "git@bitbucket.org:bettercloud/$1.git" --branch continuous --single-branch
+  git clone "git@bitbucket.org:bettercloud/$1.git" --branch continuous
 }
 
 function killp () {
@@ -90,8 +90,7 @@ kvagrant() {
   vagrant global-status | awk '/running/{ print $1 }' | xargs vagrant destroy --force
 }
 
-# must be run from terraform workspace with "bastion_public_ip" in output
-tssh() {
+gssh() {
   local ssh_user="$(cat "$HOME/.ephemeral/ssh_user")"
   local hostname
 
@@ -109,17 +108,37 @@ tssh() {
   -o UserKnownHostsFile=/dev/null
   )
 
-  local response=$(gcloud compute instances describe bastion --format=json)
+  BASTION_IP=$(gcloud compute instances describe bastion --format="value(networkInterfaces[0].accessConfigs[0].natIP)")
 
-  if [ -n "$response" ]; then
-    local bastion_ip=$(echo "$response" | jq -r '.networkInterfaces[].accessConfigs[].natIP')
-  else
+  if [ -z "$BASTION_IP" ]; then
     echo "No bastion host found for $(gcloud config get-value project)"
     return 1
   fi
 
-  local proxy_command="ssh ${ssh_opts[@]} %r@$bastion_ip -W %h:%p"
+  local proxy_command="ssh ${ssh_opts[@]} %r@$BASTION_IP -W %h:%p"
   ssh "${ssh_opts[@]}" -o ProxyCommand="$proxy_command" $ssh_user@$hostname "$@"
+}
+
+gscp() {
+  local ssh_user="$(cat "$HOME/.ephemeral/ssh_user")"
+  local hostname
+
+  local ssh_opts=(
+  -q
+  -o ForwardAgent=yes
+  -o StrictHostKeyChecking=no
+  -o UserKnownHostsFile=/dev/null
+  )
+
+  BASTION_IP=$(gcloud compute instances describe bastion --format="value(networkInterfaces[0].accessConfigs[0].natIP)")
+
+  if [ -z "$BASTION_IP" ]; then
+    echo "No bastion host found for $(gcloud config get-value project)"
+    return 1
+  fi
+
+  local proxy_command="ssh ${ssh_opts[@]} %r@$BASTION_IP -W %h:%p"
+  scp "${ssh_opts[@]}" -o ProxyCommand="$proxy_command" "$@"
 }
 
 eph_init() {
