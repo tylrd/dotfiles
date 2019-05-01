@@ -13,10 +13,14 @@ get_envs() {
   local cyan='\[\e[1;36m\]'
   local green='\[\e[0;32m\]'
 
-  KUBE_CONTEXT=$(kubectl config current-context | cut -d'_' -f4)
+  KUBE_CONFIG_FILE=${KUBECONFIG:-"$HOME/.kube/config"}
 
-  if [ -n "$KUBE_CONTEXT" ]; then
-    prompt+=" ${cyan}($KUBE_CONTEXT)"
+  if [ -f "$KUBE_CONFIG_FILE" ]; then
+    KUBE_CONTEXT=$(sed -n 's/current-context: \(.*\)/\1/p' $HOME/.kube/config | cut -d'_' -f4)
+
+    if [ -n "$KUBE_CONTEXT" ]; then
+      prompt+=" ${cyan}($KUBE_CONTEXT)"
+    fi
   fi
 
   if [ -z "$GOOGLE_PROJECT" ] && [ -z "$CHEF_ENV" ]; then
