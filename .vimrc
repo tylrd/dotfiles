@@ -11,8 +11,8 @@ set scrolloff=8
 set number
 set relativenumber
 set laststatus=2
-" set ttyfast
-" set lazyredraw
+set ttyfast
+set lazyredraw
 
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:
 set splitbelow
@@ -95,12 +95,14 @@ set timeoutlen=1000 ttimeoutlen=0
 
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules,.terraform,.gradle
 
-" highlight ColorColumn ctermbg=235 guibg=#1C262B
+set formatoptions+=n                  " smart auto-indenting inside numbered lists
 
-" set highlight+=c:LineNr
-" set highlight+=@:ColorColumn
+set foldmethod=indent
+set nofoldenable
 
 set hlsearch
+
+" clear highlights of previous searches when opening files
 let @/ = ""
 
 hi! MatchParen cterm=none ctermbg=black ctermfg=white
@@ -118,15 +120,18 @@ command! Wq wq
 " Switch between last two files
 nnoremap <Leader>b <C-^>
 
+" quickly save the file
 nnoremap <Leader>w :write<CR>
 
+" use ripgrep to fuzzy search
 nnoremap <Leader>f :Rg<CR>
 
 " Easier editing of .vimrc
 nnoremap <Leader>v :sp ~/.vimrc<CR>
 nnoremap <Leader>r :source $MYVIMRC<CR>
 
-nnoremap <Leader>h :silent! nohls<cr>
+" hit return again in command mode, and the highlighting disappears.
+nnoremap <CR> :noh<CR><CR>
 
 " Quickly switch between buffers
 nnoremap <Leader><Left> :bprevious<CR>
@@ -160,11 +165,6 @@ autocmd BufNewFile,BufRead *.yml set filetype=yaml
 if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j                " remove comment leader when joining comment lines
 endif
-
-set formatoptions+=n                  " smart auto-indenting inside numbered lists
-
-set foldmethod=indent
-set nofoldenable
 
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -209,11 +209,9 @@ Plug 'itchyny/lightline.vim'
 
 " wiki
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-" Plug 'junegunn/limelight.vim'
 Plug 'mattn/calendar-vim'
 Plug 'Konfekt/FastFold'
 
-Plug 'cocopon/iceberg.vim'
 Plug 'nanotech/jellybeans.vim'
 call plug#end()
 
@@ -230,7 +228,6 @@ if has('termguicolors') && &termguicolors
 endif
 
 colorscheme jellybeans
-" colorscheme iceberg
 
 let g:ruby_fold = 1
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx"
@@ -243,7 +240,7 @@ let g:user_emmet_settings = {
 
 " Lightline
 let g:lightline = {
-      \ 'colorscheme': 'iceberg',
+      \ 'colorscheme': 'jellybeans',
       \ }
 
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
@@ -317,17 +314,3 @@ highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Re
 " reset certain things to black
 hi! Normal ctermbg=000 ctermfg=252 guibg=#161821 guifg=#c6c8d1
 hi! LineNr ctermbg=000 ctermfg=239 guibg=#1e2132 guifg=#444b71
-" hi! CursorLineNr ctermbg=000 ctermfg=253 guibg=#2a3158 guifg=#cdd1e6
-" hi! EndOfBuffer ctermbg=000 ctermfg=236 guibg=#161821 guifg=#242940
-" hi! GitGutterAdd ctermbg=000 ctermfg=150 guibg=#1e2132 guifg=#b4be82
-" hi! GitGutterChange ctermbg=000 ctermfg=109 guibg=#1e2132 guifg=#89b8c2
-" hi! GitGutterChangeDelete ctermbg=000 ctermfg=109 guibg=#1e2132 guifg=#89b8c2
-" hi! GitGutterDelete ctermbg=000 ctermfg=203 guibg=#1e2132 guifg=#e27878
-
-let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
-let s:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
-let s:palette.inactive.middle = s:palette.normal.middle
-let s:palette.tabline.middle = s:palette.normal.middle
-
-vnoremap p "_dP
-nmap <Leader>p :let @*=expand("%")<CR>
