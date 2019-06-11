@@ -55,10 +55,8 @@ export PATH="$HOME/n/bin:$PATH"
 #####################
 # COMPLETION
 #####################
-if [ $SYSTEM_TYPE = "OSX" ]; then
-    if [ -f $(brew --prefix)/etc/bash_completion ]; then
-      source $(brew --prefix)/etc/bash_completion
-    fi
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  source $(brew --prefix)/etc/bash_completion
 fi
 
 if [ -f "$HOME/.local" ]; then source "$HOME/.local"; fi
@@ -76,7 +74,7 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWCOLORHINTS=1
 
-PROMPT_COMMAND="__prompt_command;"
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}__prompt_command;"
 
 get_envs() {
   prompt=""
@@ -133,6 +131,8 @@ __prompt_command() {
 
     PS1+="${RCol}@\h:${Blu}$pwd2${BYel}$(__git_ps1 " (%s)")$(get_envs) ${RCol}\n$ "
 }
+
+ssh-add -A &> /dev/null
 
 #####################
 # ALIASES
@@ -214,8 +214,10 @@ if [[ "$SYSTEM_TYPE" == "OSX" ]]; then  # Is this the Ubuntu system?
     alias date="gdate"
 fi
 
-alias la="ls -laFh $COLORFLAG"
-alias ll="ls -lFh --group-directories-first $COLORFLAG"
+COLORFLAG="-G"
+alias ls='/usr/local/bin/gls --color -lash --group-directories-first'
+alias la="ls"
+alias ll="ls"
 
 #####################
 # FUNCTIONS
@@ -308,15 +310,13 @@ gscp() {
 }
 
 glist() {
-  local project=$1
+  echo "Instances for project: $(gcloud config get-value project)..."
 
-  if [ -z "$project" ]; then
-    project=$(gcloud config get-value project)
+  if [ "$#" -eq 0 ]; then
+    gcloud compute instances list
+  else
+    gcloud compute instances list "$@"
   fi
-
-  echo "Instances for project: $project..."
-
-  gcloud compute instances list --limit=100 --project="$project"
 }
 
 cook() {
@@ -405,7 +405,7 @@ fzf_search_and_open() {
   fi
 }
 
-bind -x '"\C-f": fzf_search_and_open'
+bind -x '"\C-f": findpod'
 
 showcert() {
   if [ -z "$1" ]; then
