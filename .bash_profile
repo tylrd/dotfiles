@@ -5,6 +5,7 @@ export PAGER=${PAGER:-"less"}
 export EDITOR="vim"
 export VISUAL=$EDITOR
 
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -84,7 +85,7 @@ get_envs() {
   KUBE_CONFIG_FILE=${KUBECONFIG:-"$HOME/.kube/config"}
 
   if [ -f "$KUBE_CONFIG_FILE" ]; then
-    KUBE_CONTEXT=$(sed -n 's/current-context: \(.*\)/\1/p' $HOME/.kube/config | cut -d'_' -f4)
+    KUBE_CONTEXT=$(sed -n 's/current-context: \(.*\)/\1/p' $KUBE_CONFIG_FILE | cut -d'_' -f4)
 
     if [ -n "$KUBE_CONTEXT" ]; then
       prompt+=" ${cyan}($KUBE_CONTEXT)"
@@ -173,8 +174,15 @@ alias tkill="tmux kill-session -t"
 alias k="kubectl"
 alias kx="kubectx"
 alias kn="kubens"
-alias kv="kubectl config current-context"
-alias ksh="kubectl run -i --tty busybox --image=busybox -- sh"
+
+kc(){
+    export KUBECONFIG=$(mktemp -t kubeconfig)
+    cat ~/.kube/config >> $KUBECONFIG
+    kubectx
+}
+
+# alias kv="kubectl config current-context"
+# alias ksh="kubectl run -i --tty busybox --image=busybox -- sh"
 
 # Google Cloud aliases
 if command -v gcloud &> /dev/null; then
