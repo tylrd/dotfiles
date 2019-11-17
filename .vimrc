@@ -109,6 +109,8 @@ hi! MatchParen cterm=none ctermbg=black ctermfg=white
 hi! Error cterm=reverse ctermbg=white ctermfg=red
 
 autocmd BufRead,BufNewFile Berksfile set filetype=ruby
+autocmd BufRead,BufNewFile Jenkinsfile.* set filetype=Jenkinsfile
+autocmd BufNewFile,BufRead *.yml set filetype=yaml
 
 command! Q q " Bind :Q to :q
 command! Qall qall
@@ -159,8 +161,6 @@ nmap \x :cclose<CR>
 nmap \g :Gstatus<CR>
 
 autocmd filetype crontab setlocal nobackup nowritebackup
-autocmd BufRead,BufNewFile Berksfile* set filetype=ruby
-autocmd BufNewFile,BufRead *.yml set filetype=yaml
 
 if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j                " remove comment leader when joining comment lines
@@ -173,8 +173,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-" Language Packs
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'mattn/emmet-vim'
 Plug 'alvan/vim-closetag'
 
@@ -195,7 +194,8 @@ Plug 'junegunn/vim-easy-align'
 " https://github.com/jiangmiao/auto-pairs/issues/74
 Plug 'tylrd/auto-pairs'
 
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
+" Plug 'airblade/vim-gitgutter'
 
 " better vim integration with terminal
 Plug 'wincent/terminus'
@@ -209,7 +209,6 @@ Plug 'itchyny/lightline.vim'
 
 " wiki
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-Plug 'mattn/calendar-vim'
 Plug 'Konfekt/FastFold'
 
 Plug 'nanotech/jellybeans.vim'
@@ -306,10 +305,9 @@ nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gb :Gblame<CR>
 
-highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+highlight SignColumn        ctermbg=NONE cterm=NONE guibg=NONE    gui=NONE
+highlight SignifySignDelete ctermfg=red  cterm=NONE guifg=#ff0000 gui=NONE
+highlight SignifySignAdd    ctermfg=green  guifg=NONE cterm=NONE gui=NONE
 
 " reset certain things to black
 hi! Normal ctermbg=000 ctermfg=252 guibg=#161821 guifg=#c6c8d1
