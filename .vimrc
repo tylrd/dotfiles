@@ -173,7 +173,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 Plug 'mattn/emmet-vim'
 Plug 'alvan/vim-closetag'
 
@@ -308,6 +308,7 @@ nnoremap <Leader>gb :Gblame<CR>
 highlight SignColumn        ctermbg=NONE cterm=NONE guibg=NONE    gui=NONE
 highlight SignifySignDelete ctermfg=red  cterm=NONE guifg=#ff0000 gui=NONE
 highlight SignifySignAdd    ctermfg=green  guifg=NONE cterm=NONE gui=NONE
+highlight SignifySignChange ctermfg=yellow guifg=NONE cterm=NONE gui=NONE
 
 " reset certain things to black
 hi! Normal ctermbg=000 ctermfg=252 guibg=#161821 guifg=#c6c8d1

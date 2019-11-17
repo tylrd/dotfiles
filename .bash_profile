@@ -32,7 +32,7 @@ shopt -s histappend
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 ## make some commands not show up in history
-#export HISTIGNORE=${HISTIGNORE:-"shutdown*:halt*:poweroff*:hibernate*:rm -rf*"}
+export HISTIGNORE=${HISTIGNORE:-"shutdown*:halt*:poweroff*:hibernate*:rm -rf*"}
 #export HISTTIMEFORMAT=${HISTTIMEFORMAT:-"%Y-%m-%d %H:%M:%S"}
 
 #export LS_COLORS='di=34' # directory  blue
@@ -42,8 +42,6 @@ shopt -s histappend
 
 ## Go variables
 export GOPATH=$HOME/go
-
-#export PIPENV_VENV_IN_PROJECT=1
 
 ######################
 ## PATH
@@ -75,7 +73,21 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWCOLORHINTS=1
 
-PS1='\[\e[0m\]\h \W\[\e[1;33m\]$(__git_ps1 " (%s)")\[\e[0m\]$ '
+__kube_ps1() {
+  KUBE_CONFIG_FILE=${KUBECONFIG:-"$HOME/.kube/config"}
+
+  if [ -f "$KUBE_CONFIG_FILE" ]; then
+    KUBE_CONTEXT=$(sed -n 's/current-context: \(.*\)/\1/p' $KUBE_CONFIG_FILE | cut -d'_' -f4)
+  fi
+
+  if [ -z "$KUBE_CONTEXT" ]; then
+    echo
+  else
+    echo "[$KUBE_CONTEXT]"
+  fi
+}
+
+PS1='\[\e[0m\]\h \W\[\e[1;33m\]$(__git_ps1 " (%s)") \[\e[1;36m\]$(__kube_ps1)\[\e[0m\]\n$ '
 
 ######################
 ## ALIASES
