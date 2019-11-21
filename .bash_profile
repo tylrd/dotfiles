@@ -5,7 +5,7 @@ export PAGER=${PAGER:-"less"}
 export EDITOR="vim"
 export VISUAL=$EDITOR
 
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
+export FZF_DEFAULT_OPTS='--height 60% --layout=reverse'
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -25,11 +25,12 @@ export HISTFILESIZE=$HISTSIZE
 ## https://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
 ## Avoid duplicates
 export HISTCONTROL=ignoreboth:erasedups
+
 ## When the shell exits, append to the history file instead of overwriting it
 shopt -s histappend
 
 ## After each command, append to the history file and reread it
-#export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 ## make some commands not show up in history
 export HISTIGNORE=${HISTIGNORE:-"shutdown*:halt*:poweroff*:hibernate*:rm -rf*"}
@@ -83,7 +84,7 @@ __kube_ps1() {
   if [ -z "$KUBE_CONTEXT" ]; then
     echo
   else
-    echo "[$KUBE_CONTEXT]"
+    echo "$KUBE_CONTEXT"
   fi
 }
 
