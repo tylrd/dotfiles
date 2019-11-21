@@ -84,7 +84,8 @@ __kube_ps1() {
   if [ -z "$KUBE_CONTEXT" ]; then
     echo
   else
-    echo "$KUBE_CONTEXT"
+    NAMESPACE=$(kubectl config view --minify --output 'jsonpath={..namespace}')
+    echo "$KUBE_CONTEXT:$NAMESPACE"
   fi
 }
 
