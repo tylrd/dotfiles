@@ -1,6 +1,7 @@
 #####################
 # EXPORTS
 #####################
+export IGNOREEOF=10
 export PAGER=${PAGER:-"less"}
 export EDITOR="vim"
 export VISUAL=$EDITOR
@@ -84,8 +85,8 @@ __kube_ps1() {
   if [ -z "$KUBE_CONTEXT" ]; then
     echo
   else
-    NAMESPACE=$(kubectl config view --minify --output 'jsonpath={..namespace}')
-    echo "$KUBE_CONTEXT:$NAMESPACE"
+    # NAMESPACE=$(kubectl config view --minify --output 'jsonpath={..namespace}')
+    echo "$KUBE_CONTEXT"
   fi
 }
 
