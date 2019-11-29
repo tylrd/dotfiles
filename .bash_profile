@@ -128,6 +128,7 @@ alias tkill="tmux kill-session -t"
 alias k="kubectl"
 alias kx="kubectx"
 alias kn="kubens"
+alias ns="kubectl config view --minify --output 'jsonpath={..namespace}'; echo"
 
 kc(){
     export KUBECONFIG=$(mktemp -t kubeconfig)
