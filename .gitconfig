@@ -1,7 +1,6 @@
 [user]
     name = Taylor Daugherty
     email = taylor.daugherty@bettercloud.com
-	signingkey = 0A10222A
 
 [core]
     editor = vim
@@ -20,10 +19,6 @@
     prune   = fetch --prune
     blog    = log --first-parent --no-merges --oneline
     caa     = commit --amend -a -C HEAD --no-edit
-
-[merge "npm-merge-driver"]
-    name = automatically merge npm lockfiles
-    driver = npx npm-merge-driver merge %A %O %B %P
 
 [pull]
     rebase = true
@@ -45,10 +40,6 @@
 
 [status]
     showUntrackedFiles = all
-
-; [pager]
-;     diff = diff-so-fancy | less --tabs=1,5 -RFX
-;     show = diff-so-fancy | less --tabs=1,5 -RFX
 
 [color "diff"]
     meta = yellow
