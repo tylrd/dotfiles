@@ -1,8 +1,11 @@
+# Turn this on for debugging
+# set fish_trace true
+
 set -U fish_greeting
 
 if status --is-login
-  echo This is a login shell
   set -gx PATH $HOME/.pyenv/bin $HOME/.local/bin /opt/homebrew/bin $HOME/google-cloud-sdk/bin $PATH
+  pyenv init - | source
 end
 
 set -gx EDITOR nvim
@@ -10,7 +13,7 @@ set -gx FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=90% --previ
 set -gx FZF_DEFAULT_COMMAND 'fd --type f'
 
 set fish_cursor_insert line
-set -U nvm_default_version 14
+# set -U nvm_default_version 14
 
 alias vim="nvim"
 alias vi="nvim"
@@ -22,7 +25,7 @@ fish_vi_key_bindings
 fzf_configure_bindings --directory=\cf
 
 set fzf_fd_opts --type f
-set --export fzf_dir_opts --bind "ctrl-v:become(SHELL=sh nvim {} &> /dev/tty)"
+set --export fzf_dir_opts --bind "ctrl-v:execute(SHELL=sh nvim {} &> /dev/tty)"
 
 alias fishcnf="vim ~/.config/fish/config.fish && source ~/.config/fish/config.fish"
 alias kittycnf="vim ~/.config/kitty/kitty.conf"
@@ -30,8 +33,15 @@ alias vimcnf="vim ~/.config/nvim/init.lua"
 
 function fzf_dir
   set dir $(fd --type d | fzf)
-  commandline "cd $dir"
-  commandline -f execute
+
+  if test -n $dir
+    echo $dir
+    commandline "cd $dir"
+    commandline -f execute
+  else
+    echo "empty"
+    return
+  end
 end
 
 function fish_user_key_bindings
