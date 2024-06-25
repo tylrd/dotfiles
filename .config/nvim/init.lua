@@ -29,10 +29,24 @@ vim.o.expandtab = true
 vim.o.list = true
 vim.o.listchars = 'tab:▷┅,trail:•'
 vim.o.wildmenu = true
+vim.o.swapfile = false
+vim.o.autowriteall = true
 
 vim.diagnostic.config({
   virtual_text = false
 })
+
+vim.cmd.cnoreabbrev("wq", "wq!")
+vim.cmd.cnoreabbrev("cq", "cq!")
+vim.cmd.cnoreabbrev("Wq", "wq")
+vim.cmd.cnoreabbrev("qw", "wq")
+vim.cmd.cnoreabbrev("W", "w")
+vim.cmd.cnoreabbrev("WQ", "wq")
+vim.cmd.cnoreabbrev("Qa", "qa")
+vim.cmd.cnoreabbrev("Bd", "bd")
+vim.cmd.cnoreabbrev("bD", "bd")
+vim.cmd.cnoreabbrev("bD", "bd")
+vim.cmd.cnoreabbrev("Q", "q")
 
 function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
@@ -47,6 +61,10 @@ map("n", "-", ":NvimTreeOpen<cr>")
 map("n", "<CR>", ":noh<CR><CR>")
 map('n', '<leader>e', vim.diagnostic.open_float)
 map('n', '<leader><leader>', ':noh<CR>')
+map('n', '<leader>b', ':b#<CR>')
+map('n', '<leader>g', ':Neogit<CR>')
+map('n', 'c', '"_c')
+map('n', 'v', '"_v')
 
 local builtin = require('telescope.builtin')
 map("n", "<C-f>", builtin.find_files)
@@ -64,6 +82,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+
+-- Close NvimTree if it's the last buffer
 vim.api.nvim_create_autocmd("QuitPre", {
   callback = function()
     local invalid_win = {}
@@ -80,3 +100,38 @@ vim.api.nvim_create_autocmd("QuitPre", {
     end
   end
 })
+
+-- Open files at last known line
+vim.api.nvim_create_autocmd('BufRead', {
+  callback = function(opts)
+    vim.api.nvim_create_autocmd('BufWinEnter', {
+      once = true,
+      buffer = opts.buf,
+      callback = function()
+        local ft = vim.bo[opts.buf].filetype
+        local last_known_line = vim.api.nvim_buf_get_mark(opts.buf, '"')[1]
+        if
+          not (ft:match('commit') and ft:match('rebase'))
+          and last_known_line > 1
+          and last_known_line <= vim.api.nvim_buf_line_count(opts.buf)
+        then
+          vim.api.nvim_feedkeys([[g`"]], 'nx', false)
+        end
+      end,
+    })
+  end,
+})
+
+-- Toggle Term 
+function _G.set_terminal_keymaps()
+  local opts = {buffer = 0}
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+end
+
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')

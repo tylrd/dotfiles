@@ -14,6 +14,9 @@ return {
         load_textobjects = true
       end,
     },
+    {
+      "windwp/nvim-ts-autotag",
+    }
   },
   cmd = { "TSUpdateSync" },
   keys = {
@@ -24,14 +27,17 @@ return {
   opts = {
     highlight = { enable = true },
     indent = { enable = true },
+    autotag = { enable = true },
     ensure_installed = {
       "bash",
       "c",
       "html",
+      "hcl",
       "java",
       "javascript",
       "jsdoc",
       "json",
+      "jsonnet",
       "lua",
       "luadoc",
       "luap",
@@ -70,10 +76,13 @@ return {
         return true
       end, opts.ensure_installed)
     end
+
+    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+    parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
     require("nvim-treesitter.configs").setup(opts)
 
     if load_textobjects then
-      -- PERF: no need to load the plugin, if we only need its queries for mini.ai
+        -- PERF: no need to load the plugin, if we only need its queries for mini.ai
       if opts.textobjects then
         for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
           if opts.textobjects[mod] and opts.textobjects[mod].enable then
