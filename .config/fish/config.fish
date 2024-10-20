@@ -20,6 +20,7 @@ set -U nvm_default_packages @fsouza/prettierd yarn
 status --is-interactive; and rbenv init - fish | source
 
 alias vim="nvim"
+alias docker="podman"
 alias vi="nvim"
 alias v="nvim"
 alias k="kubectl"
