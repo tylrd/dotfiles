@@ -13,6 +13,11 @@ set -gx EDITOR nvim
 set -gx FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=90% --preview-window=wrap --marker="*" --keep-right'
 set -gx FZF_DEFAULT_COMMAND 'fd --type f'
 
+set -gx tide_left_prompt_items pwd git newline character
+set -gx tide_right_prompt_items python aws kubectl time
+set --universal tide_python_icon 🐍
+set --universal tide_kubectl_icon ⎈
+
 set fish_cursor_insert line
 set -U nvm_default_version 20
 set -U nvm_default_packages @fsouza/prettierd yarn
@@ -27,10 +32,11 @@ alias k="kubectl"
 alias ls='gls --color -lash --group-directories-first'
 
 fish_vi_key_bindings
+set fish_vi_force_cursor 1
 fzf_configure_bindings --directory=\cf
 
 set fzf_fd_opts --type f
-set --export fzf_dir_opts --bind "enter:execute(nvim {} &> /dev/tty)" --bind "ctrl-v:execute(nvim {} &> /dev/tty)"
+set --export fzf_directory_opts --bind "enter:become(nvim {} &> /dev/tty)" --bind "ctrl-v:become(nvim {} &> /dev/tty)"
 
 alias fishcnf="vim ~/.config/fish/config.fish && source ~/.config/fish/config.fish"
 alias kittycnf="vim ~/.config/kitty/kitty.conf"
@@ -84,7 +90,21 @@ function cdup
   end
 end
 
+function kc
+  set -gx KUBECONFIG $(mktemp -t kubeconfig)
+  cat ~/.kube/config >> $KUBECONFIG
+  kubectx
+end
+
 alias j8="java_home 1.8"
 alias j11="java_home 11"
 alias j17="java_home 17"
 
+function glf --description "Run git log on a file selected with fzf"
+    if not git rev-parse --is-inside-work-tree >/dev/null 2>&1
+        echo "Error: Not in a git repository" >&2
+        return 1
+    end
+
+    git ls-files | fzf --ansi --reverse --preview 'git log --color=always --format=format:"%Cred%h%Creset %C(bold blue)%an%Creset %Cgreen%cr%Creset %s%C(bold red)%d%Creset" --date=short {1}' --bind 'enter:execute(git log --follow --patch {} | bat)'
+end

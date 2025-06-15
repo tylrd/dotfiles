@@ -15,7 +15,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 
-vim.cmd.colorscheme "catppuccin"
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+vim.cmd.colorscheme "jellybeans"
 vim.o.clipboard = "unnamed"
 vim.o.cursorline = true
 vim.o.scrolloff = 9999

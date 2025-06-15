@@ -3,29 +3,10 @@ return {
     'hrsh7th/nvim-cmp',
     dependencies = {
       'L3MON4D3/LuaSnip',
-      'onsails/lspkind-nvim',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      {
-        "roobert/tailwindcss-colorizer-cmp.nvim",
-        config = function()
-          require("tailwindcss-colorizer-cmp").setup({
-            color_square_width = 2,
-          })
-        end
-      },
-      { 'jackieaskins/cmp-emmet', build = 'npm run release'  }
+      'hrsh7th/cmp-nvim-lsp'
     },
     config = function()
       local cmp = require("cmp")
-      local cmp_tailwind = require("tailwindcss-colorizer-cmp")
-      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-
-      -- Adds parentheses when a function is selected
-      cmp.event:on(
-        'confirm_done',
-        cmp_autopairs.on_confirm_done()
-      )
 
       cmp.setup({
         snippet = {
@@ -59,43 +40,10 @@ return {
         }),
 
         sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp' }
+        }, {
           { name = 'buffer' },
-          -- { name = 'emmet' },
-          { name = 'nvim_lsp_signature_help' },
-          {
-            name = "treesitter",
-          },
-        }),
-
-        formatting = {
-          format = require('lspkind').cmp_format(
-            { 
-              mode = 'symbol_text',
-              maxwidth = 50,
-              ellipsis_char = '...',
-              before = function(entry, vim_item)
-                cmp_tailwind.formatter(entry, vim_item)
-                return vim_item
-              end,
-            }
-          )
-        },
-
-        sorting = {
-          priority_weight = 2,
-          comparators = {
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            cmp.config.compare.locality,
-            cmp.config.compare.kind,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
-          },
-        },
+        })
 
       })
 
@@ -118,14 +66,7 @@ return {
         automatic_installation = true
       }
       local lspconfig = require("lspconfig")
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
-
       lspconfig.pyright.setup {}
-      lspconfig.tailwindcss.setup {}
-      -- lspconfig.tsserver.setup {
-      --  capabilities = lsp_capabilities,
-      -- }
     end
   }
 }

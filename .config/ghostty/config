@@ -1,0 +1,12 @@
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+keybind = super+shift+plus=increase_font_size:1
+keybind = shift+ctrl+enter=new_split:auto
+keybind = ctrl+s>l=goto_split:right
+keybind = ctrl+s>h=goto_split:left
+keybind = ctrl+s>j=goto_split:down
+keybind = ctrl+s>k=goto_split:up
+
+font-size = 16
+macos-titlebar-style = tabs
+macos-titlebar-proxy-icon = hidden
+theme = jellybeans
