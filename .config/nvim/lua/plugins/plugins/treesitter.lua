@@ -6,13 +6,13 @@ return {
   dependencies = {
     {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      init = function()
-        -- disable rtp plugin, as we only need its queries for mini.ai
-        -- In case other textobject modules are enabled, we will load them
-        -- once nvim-treesitter is loaded
-        require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-        load_textobjects = true
-      end,
+      -- init = function()
+      --   -- disable rtp plugin, as we only need its queries for mini.ai
+      --   -- In case other textobject modules are enabled, we will load them
+      --   -- once nvim-treesitter is loaded
+      --   require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+      --   load_textobjects = true
+      -- end,
     },
   },
   cmd = { "TSUpdateSync" },
@@ -24,6 +24,7 @@ return {
   opts = {
     highlight = { enable = true },
     indent = { enable = true },
+    fold = { enable = true },
     ensure_installed = {
       "bash",
       "c",
@@ -46,6 +47,53 @@ return {
       "vim",
       "vimdoc",
       "yaml",
+    },
+    textobjects = {
+      select = {
+        enable = true,
+        lookahead = true,
+        keymaps = {
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          ["ic"] = "@class.inner",
+          ["aa"] = "@parameter.outer",
+          ["ia"] = "@parameter.inner",
+          ["ab"] = "@block.outer",
+          ["ib"] = "@block.inner",
+          ["a/"] = "@scopename.outer",
+          ["i/"] = "@scopename.inner",
+        },
+      },
+      move = {
+        enable = true,
+        set_jumps = true, -- whether to set jumps in the jumplist
+        goto_next_start = {
+          ["]m"] = "@function.outer",
+          ["]]"] = "@class.outer",
+        },
+        goto_next_end = {
+          ["]M"] = "@function.outer",
+          ["]["] = "@class.outer",
+        },
+        goto_previous_start = {
+          ["[m"] = "@function.outer",
+          ["[["] = "@class.outer",
+        },
+        goto_previous_end = {
+          ["[M"] = "@function.outer",
+          ["[]"] = "@class.outer",
+        },
+      },
+      swap = {
+        enable = true,
+        swap_next = {
+          ["<leader>a"] = "@parameter.inner",
+        },
+        swap_previous = {
+          ["<leader>A"] = "@parameter.inner",
+        },
+      },
     },
     incremental_selection = {
       enable = true,
@@ -72,19 +120,19 @@ return {
     end
     require("nvim-treesitter.configs").setup(opts)
 
-    if load_textobjects then
-      -- PERF: no need to load the plugin, if we only need its queries for mini.ai
-      if opts.textobjects then
-        for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
-          if opts.textobjects[mod] and opts.textobjects[mod].enable then
-            local Loader = require("lazy.core.loader")
-            Loader.disabled_rtp_plugins["nvim-treesitter-textobjects"] = nil
-            local plugin = require("lazy.core.config").plugins["nvim-treesitter-textobjects"]
-            require("lazy.core.loader").source_runtime(plugin.dir, "plugin")
-            break
-          end
-        end
-      end
-    end
+    -- if load_textobjects then
+    --   -- PERF: no need to load the plugin, if we only need its queries for mini.ai
+    --   if opts.textobjects then
+    --     for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
+    --       if opts.textobjects[mod] and opts.textobjects[mod].enable then
+    --         local Loader = require("lazy.core.loader")
+    --         Loader.disabled_rtp_plugins["nvim-treesitter-textobjects"] = nil
+    --         local plugin = require("lazy.core.config").plugins["nvim-treesitter-textobjects"]
+    --         require("lazy.core.loader").source_runtime(plugin.dir, "plugin")
+    --         break
+    --       end
+    --     end
+    --   end
+    -- end
   end,
 }

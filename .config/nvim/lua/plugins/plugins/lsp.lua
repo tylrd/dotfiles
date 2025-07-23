@@ -2,18 +2,20 @@ return {
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
-      'L3MON4D3/LuaSnip',
-      'hrsh7th/cmp-nvim-lsp'
+      -- 'L3MON4D3/LuaSnip',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-buffer',
     },
     config = function()
       local cmp = require("cmp")
 
       cmp.setup({
-        snippet = {
-          expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-          end
-        },
+        -- snippet = {
+        --   expand = function(args)
+        --     require('luasnip').lsp_expand(args.body)
+        --   end
+        -- },
 
         mapping = cmp.mapping.preset.insert({
           ['<C-j>'] = cmp.mapping.select_next_item(),
@@ -23,7 +25,7 @@ return {
           ['<C-p>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.abort(),
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+          -- ['<Tab>'] = cmp.mapping.confirm({ select = true }),
           -- ["<Tab>"] = cmp.mapping(function(fallback)
           --   -- This little snippet will confirm with tab, and if no entry is selected, will confirm the first item
           --   if cmp.visible() then
@@ -40,12 +42,37 @@ return {
         }),
 
         sources = cmp.config.sources({
-          { name = 'nvim_lsp' }
+          { name = 'nvim_lsp' },
         }, {
           { name = 'buffer' },
         })
 
       })
+
+      cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 
+                'Man',
+                '!'
+              }
+            }
+          }
+        })
+      })
+
 
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       require('lspconfig')['pyright'].setup {
@@ -66,7 +93,33 @@ return {
         automatic_installation = true
       }
       local lspconfig = require("lspconfig")
-      lspconfig.pyright.setup {}
+      lspconfig.ruff.setup {}
+      -- if not lspconfig.terraformls.manager then
+      --   lspconfig.terraformls.setup {}
+      -- end
+      lspconfig.pyright.setup {
+        settings = {
+          python = {
+            analysis = {
+              ignore = { '*' }
+            }
+          },
+          pyright = {
+            disableOrganizeImports = true,
+          }
+        },
+      }
     end
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "InsertEnter",
+    opts = {
+      bind = true,
+      handler_opts = {
+        border = "rounded",
+        doc_lines = 0
+      }
+    },
   }
 }

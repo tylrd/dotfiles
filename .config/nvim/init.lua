@@ -15,13 +15,16 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+-- vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
 vim.cmd.colorscheme "jellybeans"
 vim.o.clipboard = "unnamed"
 vim.o.cursorline = true
-vim.o.scrolloff = 9999
+
+vim.o.laststatus = 0
+vim.o.signcolumn = "auto:2"
+vim.o.confirm = true
+-- vim.o.scrolloff = 9999
 vim.o.number = true
-vim.o.relativenumber = true
 vim.o.undofile =  true
 vim.o.ts = 2
 vim.o.sw = 2
@@ -32,15 +35,18 @@ vim.o.listchars = 'tab:▷┅,trail:•'
 vim.o.wildmenu = true
 vim.o.swapfile = false
 vim.o.autowriteall = true
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false
 
 vim.diagnostic.config({
   virtual_text = false
 })
 
-vim.cmd.cnoreabbrev("wq", "wq!")
-vim.cmd.cnoreabbrev("cq", "cq!")
-vim.cmd.cnoreabbrev("Wq", "wq")
-vim.cmd.cnoreabbrev("qw", "wq")
+vim.cmd('highlight WinBar guibg=NONE')
+vim.cmd.cnoreabbrev("wq", "w")
+vim.cmd.cnoreabbrev("Wq", "w")
+vim.cmd.cnoreabbrev("qw", "w")
 vim.cmd.cnoreabbrev("W", "w")
 vim.cmd.cnoreabbrev("WQ", "wq")
 vim.cmd.cnoreabbrev("Qa", "qa")
@@ -58,48 +64,41 @@ function map(mode, lhs, rhs, opts)
 end
 
 map("n", "<leader>w", ":w<cr>")
-map("n", "-", ":NvimTreeOpen<cr>")
+
+vim.keymap.set("n", "-", function()
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  local path = vim.fn.filereadable(buf_name) == 1 and buf_name or vim.fn.getcwd()
+  MiniFiles.open(path)
+  MiniFiles.reveal_cwd()
+end, { desc = "Open Mini Files" })
+
+map("n", "<C-f>", function() Snacks.picker.smart({filter = { cwd = true }}) end)
+map("n", "<C-b>", function() Snacks.picker.buffers() end)
 map("n", "<CR>", ":noh<CR><CR>")
 map('n', '<leader>e', vim.diagnostic.open_float)
+map('n', '<space>ca', function()
+    vim.lsp.buf.code_action({apply=true}) end)
 map('n', '<leader><leader>', ':noh<CR>')
 map('n', '<leader>b', ':b#<CR>')
-map('n', '<leader>g', ':Neogit<CR>')
+-- map('n', '<leader>lb', ':Gitsigns blame_line<CR>')
 map('n', 'c', '"_c')
 map('n', 'v', '"_v')
+map('n', '<leader>qs', function() require("persistence").load() end)
+map('n', '<leader>qS', function() require("persistence").select() end)
 
-local builtin = require('telescope.builtin')
-map("n", "<C-f>", builtin.find_files)
-map("n", "<C-g>", builtin.live_grep)
-map("n", "<C-b>", builtin.buffers)
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    local opts = { buffer = ev.buf }
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.references, opts)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "fugitive",
+  callback = function()
+    vim.keymap.set("n", "q", ":q<CR>", { buffer = true })
   end,
 })
 
-
--- Close NvimTree if it's the last buffer
-vim.api.nvim_create_autocmd("QuitPre", {
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "help",
   callback = function()
-    local invalid_win = {}
-    local wins = vim.api.nvim_list_wins()
-    for _, w in ipairs(wins) do
-      local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
-      if bufname:match("NvimTree_") ~= nil then
-        table.insert(invalid_win, w)
-      end
-    end
-    if #invalid_win == #wins - 1 then
-      -- Should quit, so we close all invalid windows.
-      for _, w in ipairs(invalid_win) do vim.api.nvim_win_close(w, true) end
-    end
-  end
+    vim.keymap.set("n", "q", ":q<CR>", { buffer = true })
+  end,
 })
 
 -- Open files at last known line
@@ -123,6 +122,29 @@ vim.api.nvim_create_autocmd('BufRead', {
   end,
 })
 
+-- Toggle quickfix
+vim.keymap.set("n", "<leader>q", function()
+  local qf_exists = false
+  for _, win in pairs(vim.fn.getwininfo()) do
+    if win["quickfix"] == 1 then
+      qf_exists = true
+    end
+  end
+  if qf_exists == true then
+    vim.cmd("cclose")
+  else
+    vim.cmd("copen")
+  end
+end, { desc = "Toggle quickfix" })
+
+vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = "#928374" })
+vim.api.nvim_set_hl(0, "SnacksPickerPathHidden", { fg = "#928374" })
+vim.api.nvim_set_hl(0, "Hidden", { fg = "#121212" })
+
+
+-- clear quickfix
+vim.keymap.set("n", "<leader>c", ":cexpr []<CR>", { desc = "Clear quickfix" })
+
 -- Toggle Term 
 function _G.set_terminal_keymaps()
   local opts = {buffer = 0}
@@ -136,3 +158,11 @@ end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+function split_terminal_right()
+  local Terminal = require('toggleterm.terminal').Terminal
+  Terminal:new({direction='horizontal'}):open()
+end
+
+vim.api.nvim_create_user_command('SplitTerminal', split_terminal_right, {})
+vim.keymap.set({"t"}, "<c-t>", "<cmd>SplitTerminal<cr>")
